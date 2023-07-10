@@ -15,6 +15,8 @@ async function createPost(req, res) {
                 .input("content", content)
                 .input("mediaUrl", mediaUrl)
                 .execute("CreatePost")
+
+            console.log(results);
             let post = results.recordset[0]
             console.log(post)
 
@@ -44,6 +46,7 @@ async function getPost(req, res) {
     try {
         if (pool.connected) {
             const postResults = await pool.request().input("postId", postId).execute("GetPostDetails");
+            console.log(postResults)
             const post = postResults.recordset[0];
 
             if (post) {
@@ -69,6 +72,8 @@ async function deletePost(req, res) {
             let results = await pool.request()
                 .input("postId", postId)
                 .execute("DeletePost")
+
+            console.log(results);
             let post = results.recordset[0]
             console.log(post)
 
@@ -97,6 +102,7 @@ async function likePost(req, res) {
     try {
         if (pool.connected) {
             const likeResults = await pool.request().input("postId", postId).input("userId", userId).execute("LikePost");
+            console.log(likeResults)
             const like = likeResults.recordset[0];
 
             if (like) {
@@ -122,6 +128,8 @@ async function unlikePost(req, res) {
     try {
         if (pool.connected) {
             const unlikeResults = await pool.request().input("postId", postId).input("userId", userId).execute("UnlikePost");
+
+            console.log(unlikeResults)
             const unlike = unlikeResults.recordset[0];
 
             if (unlike) {
@@ -146,6 +154,7 @@ async function getPostsFollowing(req, res) {
     try {
         if (pool.connected) {
             const postsResults = await pool.request().input("userId", userId).execute("GetPostsFollowing");
+            console.log(postsResults);
             const posts = postsResults.recordset;
 
             if (posts) {
@@ -172,6 +181,7 @@ async function commentPost(req, res) {
     try {
         if (pool.connected) {
             const commentResults = await pool.request().input("postId", postId).input("userId", userId).input("content", content).execute("Comment");
+            console.log(commentResults);
             const comment = commentResults.recordset[0];
 
             if (comment) {
@@ -200,6 +210,8 @@ async function replyComment(req, res) {
                 .input("content", content)
                 .input("commentId", commentId)
                 .execute("ReplyComment");
+
+            console.log(replyResults);
             const reply = replyResults.recordset[0];
 
             if (reply) {
@@ -224,6 +236,8 @@ async function likeComment(req, res) {
     try {
         if (pool.connected) {
             const likeResults = await pool.request().input("commentId", commentId).input("userId", userId).execute("LikeComment");
+
+            console.log(likeResults)
             const like = likeResults.recordset[0];
 
             if (like) {
@@ -248,6 +262,8 @@ async function UnlikeComment(req, res) {
     try {
         if (pool.connected) {
             const unlikeResults = await pool.request().input("commentId", commentId).input("userId", userId).execute("UnlikeComment");
+
+            console.log(unlikeResults)
             const unlike = unlikeResults.recordset[0];
 
             if (unlike) {
@@ -272,6 +288,7 @@ async function likeReply(req, res) {
     try {
         if (pool.connected) {
             const likeResults = await pool.request().input("replyId", replyId).input("userId", userId).execute("LikeReply");
+            console.log(likeResults);
 
             const like = likeResults.recordset[0];
 
@@ -297,6 +314,7 @@ async function UnlikeReply(req, res) {
     try {
         if (pool.connected) {
             const unlikeResults = await pool.request().input("replyId", replyId).input("userId", userId).execute("UnlikeReply");
+            console.log(unlikeResults);
             const unlike = unlikeResults.recordset[0];
 
             if (unlike) {
@@ -312,7 +330,30 @@ async function UnlikeReply(req, res) {
     }
 }
 
+async function getAllPosts(req, res) {
+    const { pool } = req;
+
+    try {
+        if (pool.connected) {
+            const postsResults = await pool.request().execute("GetAllPosts");
+            console.log(postsResults);
+            const posts = postsResults.recordset;
+
+            if (posts) {
+                res.status(200).send({
+                    success: true,
+                    message: "Successfully retrieved posts",
+                    posts: posts,
+                });
+
+                return posts;
+            }
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+
+    }
+}
 
 
-
-module.exports = { createPost, deletePost, likePost, getPost, unlikePost, getPostsFollowing, commentPost, replyComment, likeComment, UnlikeComment, likeReply, UnlikeReply }
+module.exports = { createPost, deletePost, likePost, getPost, unlikePost, getPostsFollowing, commentPost, replyComment, likeComment, UnlikeComment, likeReply, UnlikeReply, getAllPosts }

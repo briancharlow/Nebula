@@ -17,7 +17,7 @@ END
 
 
 
-DECLARE @userId INT = 1; -- Replace 1 with the actual user ID
+DECLARE @userId INT = 2; -- Replace 1 with the actual user ID
 
 -- Get user's profile
 EXEC GetUserProfile @userId;

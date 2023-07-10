@@ -1,6 +1,7 @@
 
 require('dotenv').config();
 
+const { sql, ConnectionPool } = require('mssql');
 
 
 async function createProfile(req, res) {
@@ -106,7 +107,7 @@ async function deleteProfile(req, res) {
 
 async function getUserProfile(req, res) {
     const { pool } = req;
-    const userId = req.body;
+    const userId = req.params.id;
 
     try {
         if (pool.connected) {
@@ -133,44 +134,52 @@ async function getUserProfile(req, res) {
         res.status(500).send(error.message);
     }
 }
-
 async function followUser(req, res) {
     const { pool } = req;
-    const userId = req.session.user.id;
-    const { profileId } = req.body;
+    const followerId = req.session.user.id;
+    const followingId = req.body.followingId;
 
     try {
         if (pool.connected) {
-            const followResults = await pool.request().input("userId", userId).input("profileId", profileId).execute("FollowUser");
-            const follow = followResults.recordset[0];
+            const request = pool.request();
+            request.input("followerId", followerId);
+            request.input("followingId", followingId);
 
-            if (follow) {
+            const result = await request.execute("FollowUser");
+            console.log(result);
+
+            if (result.recordset[0].Response === "User followed successfully") {
                 res.status(200).send({
                     success: true,
                     message: "Successfully followed user",
-                    follow: follow,
                 });
 
-                return follow;
+            } else if (result.recordset[0].Response === "You are already following this user") {
+                res.status(200).send({
+                    success: false,
+                    message: "You are already following this user",
+                });
 
             }
 
         }
-
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
 
 
+
+
+
 async function unfollowUser(req, res) {
     const { pool } = req;
     const userId = req.session.user.id;
-    const { profileId } = req.body;
+    const { followingId } = req.body;
 
     try {
         if (pool.connected) {
-            const unfollowResults = await pool.request().input("userId", userId).input("profileId", profileId).execute("UnfollowUser");
+            const unfollowResults = await pool.request().input("followerId", userId).input("followingId", followingId).execute("UnfollowUser");
             const unfollow = unfollowResults.recordset[0];
 
             if (unfollow) {
