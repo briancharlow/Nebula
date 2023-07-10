@@ -3,7 +3,7 @@ const express = require("express");
 const profileRouter = express.Router();
 
 
-const { createProfile, updateProfile, deleteProfile, getUserProfile } = require("../Controllers/profileController");
+const { createProfile, updateProfile, deleteProfile, getUserProfile, followUser } = require("../Controllers/profileController");
 
 const { sessionAuthorization } = require("../middlewares/sessionAuthorization");
 
@@ -17,5 +17,6 @@ profileRouter.post("/createProfile", newProfileMiddleware, createProfile)
 profileRouter.put("/updateProfile", newProfileMiddleware, updateProfile)
 profileRouter.put("/deleteProfile", deleteProfile)
 profileRouter.get("/getProfile", getUserProfile)
+profileRouter.put("/followUser", followUser)
 
 module.exports = profileRouter;

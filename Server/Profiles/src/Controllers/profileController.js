@@ -134,10 +134,65 @@ async function getUserProfile(req, res) {
     }
 }
 
+async function followUser(req, res) {
+    const { pool } = req;
+    const userId = req.session.user.id;
+    const { profileId } = req.body;
+
+    try {
+        if (pool.connected) {
+            const followResults = await pool.request().input("userId", userId).input("profileId", profileId).execute("FollowUser");
+            const follow = followResults.recordset[0];
+
+            if (follow) {
+                res.status(200).send({
+                    success: true,
+                    message: "Successfully followed user",
+                    follow: follow,
+                });
+
+                return follow;
+
+            }
+
+        }
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
+async function unfollowUser(req, res) {
+    const { pool } = req;
+    const userId = req.session.user.id;
+    const { profileId } = req.body;
+
+    try {
+        if (pool.connected) {
+            const unfollowResults = await pool.request().input("userId", userId).input("profileId", profileId).execute("UnfollowUser");
+            const unfollow = unfollowResults.recordset[0];
+
+            if (unfollow) {
+                res.status(200).send({
+                    success: true,
+                    message: "Successfully unfollowed user",
+                    unfollow: unfollow,
+                });
+
+                return unfollow;
+
+            }
+
+        }
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
 
 
 
 
 
-
-module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile }
+module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser }
