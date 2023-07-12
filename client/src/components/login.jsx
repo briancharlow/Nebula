@@ -1,69 +1,116 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BiArrowBack } from "react-icons/bi";
 import "../css/login.css"
 
+const SignUp = () => {
+  const navigate = useNavigate();
+  const handleSignInClick = () => {
+    navigate("/signin");
+  };
+  const backHome = () => {
+    navigate("/");
+  };
+  // usestates to get the values of the input boxes
+  const [Name, setName] = useState("");
+  const [Address, setAddress] = useState("");
+  const [ContactNumber, setContactNumber] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const [c_password, setc_password] = useState("");
 
-const RegisterPage = () => {
-  const [fullname, setFullname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [phone_number, setPhone_number] = useState('');
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const data = {
-      fullname: fullname,
-      email: email,
-      password: password,
-      phone_number: phone_number,
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (Password !== c_password) {
+      alert("Password and confirm Password do not match");
+      return;
+    }
+    const registrationData = {
+      Name,
+      Address,
+      ContactNumber,
+      Email,
+      Password,
+      c_password,
     };
-
+    console.log(registrationData);
     try {
-      const response = await axios.post("http://localhost:5000/register ", data);
-
-      if (response.status === 201) {
-        alert('Successfully created user!');
-      } else {
-        alert('An error occurred.');
-      }
+      const response = await axios.post(
+        "http://localhost:5000/register",
+        registrationData
+      );
     } catch (error) {
-      console.error(error);
+      if (error.response) {
+        console.error("Server Error:", error.response.data);
+      } else if (error.request) {
+        console.error("No response from server:", error.request);
+      } else {
+        console.error("Error:", error.message);
+      }
     }
   };
 
   return (
-    <div className='container'>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
+    <div>
+      <div className="backhome" onClick={backHome}>
+        <BiArrowBack />
+      </div>
+      <form className="sign-up-form" onSubmit={handleSubmit}>
+        <h1>Create Account</h1>
         <input
           type="text"
-          placeholder="Fullname"
-          value={fullname}
-          onChange={(event) => setFullname(event.target.value)}
+          placeholder="Name"
+          className="input-box"
+          value={Name}
+          onChange={(e) => setName(e.target.value)}
         />
         <input
           type="email"
           placeholder="Email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          className="input-box"
+          value={Email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Phone Number"
+          className="input-box"
+          value={ContactNumber}
+          onChange={(e) => setContactNumber(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Address"
+          className="input-box"
+          value={Address}
+          onChange={(e) => setAddress(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          className="input-box"
+          value={Password}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <input
-          type="text"
-          placeholder="Phone number"
-          value={phone_number}
-          onChange={(event) => setPhone_number(event.target.value)}
+          type="password"
+          placeholder=" Confirm Password"
+          className="input-box"
+          value={c_password}
+          onChange={(e) => setc_password(e.target.value)}
         />
-        <button type="submit">Register</button>
+
+        <button className="sign-btn">Sign Up</button>
+        <p>
+          Already have an account?{" "}
+          <a href="#" onClick={handleSignInClick}>
+            Sign In
+          </a>
+        </p>
       </form>
     </div>
   );
 };
 
-export default RegisterPage;
+export default SignUp;

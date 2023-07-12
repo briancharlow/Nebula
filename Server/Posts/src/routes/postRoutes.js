@@ -17,7 +17,7 @@ const newPostMiddleware = require("../middlewares/newPostMiddleware");
 postRouter.use(sessionAuthorization);
 postRouter.post("/createPost", newPostMiddleware, createPost)
 postRouter.post("/likePost", likePost)
-postRouter.delete("/unlikePost", unlikePost)
+postRouter.delete("/unlikePost/:id", unlikePost)
 postRouter.get("/forYou", getPostsFollowing)
 postRouter.post("/commentPost", commentPost)
 postRouter.post("/replyComment", replyComment)

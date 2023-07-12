@@ -105,7 +105,7 @@ async function likePost(req, res) {
             console.log(likeResults)
             const like = likeResults.recordset[0];
 
-            if (like.Message === 'Post liked successfully') {
+            if (like.Message === 'Post liked successfully.') {
                 res.status(200).send({
                     success: true,
                     message: like.Message,
@@ -128,24 +128,29 @@ async function likePost(req, res) {
         res.status(500).send(error.message);
     }
 }
-
 async function unlikePost(req, res) {
     const { pool } = req;
-    const { postId } = req.body;
+    const postId = req.params.id;
     const userId = req.session.user.id;
 
     try {
         if (pool.connected) {
-            const unlikeResults = await pool.request().input("postID", postId).input("userID", userId).execute("UnlikePost");
+            const request = pool.request();
+            request.input("postID", postId);
+            request.input("userID", userId);
 
-            console.log(unlikeResults)
-            const unlike = unlikeResults.recordset[0];
+            const result = await request.execute("UnlikePost");
+            const unlike = result.recordset[0];
 
-            if (unlike.Result === 'Post unliked successfully') {
+            if (unlike.Result === "Post unliked successfully") {
                 res.status(200).send({
                     success: true,
-                    message: unlike.Result
-
+                    message: unlike.Result,
+                });
+            } else {
+                res.status(400).send({
+                    success: false,
+                    message: unlike.Result,
                 });
             }
         }
@@ -155,9 +160,11 @@ async function unlikePost(req, res) {
 }
 
 
+
 async function getPostsFollowing(req, res) {
     const { pool } = req;
     const userId = req.session.user.id;
+
 
 
     try {
