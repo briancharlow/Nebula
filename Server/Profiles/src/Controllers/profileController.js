@@ -231,8 +231,12 @@ async function getSingleNotification(req, res) {
 
     try {
         if (pool.connected) {
-            const notificationResults = await pool.request().input("notificationId", notificationId).execute("GetSingleNotification");
-            const notification = notificationResults.recordset[0];
+            const request = pool.request();
+            request.input("notificationId", notificationId);
+
+            const result = await request.execute("GetNotification");
+            console.log(result);
+            const notification = result.recordset[0];
 
             if (notification) {
                 res.status(200).send({
@@ -240,8 +244,11 @@ async function getSingleNotification(req, res) {
                     message: "Successfully retrieved notification",
                     notification: notification,
                 });
-
-                return notification;
+            } else {
+                res.status(404).send({
+                    success: false,
+                    message: "Notification not found",
+                });
             }
         }
     } catch (error) {
@@ -255,18 +262,15 @@ async function markNotificationAsRead(req, res) {
 
     try {
         if (pool.connected) {
-            const notificationResults = await pool.request().input("notificationId", notificationId).execute("MarkNotificationAsRead");
-            const notification = notificationResults.recordset[0];
+            const request = pool.request();
+            request.input("notificationId", notificationId);
 
-            if (notification) {
-                res.status(200).send({
-                    success: true,
-                    message: "Successfully marked notification as read",
-                    notification: notification,
-                });
+            await request.execute("MarkNotificationAsRead");
 
-                return notification;
-            }
+            res.status(200).send({
+                success: true,
+                message: "Notification marked as read",
+            });
         }
     } catch (error) {
         res.status(500).send(error.message);
@@ -274,5 +278,26 @@ async function markNotificationAsRead(req, res) {
 }
 
 
+async function markAllNotificationsAsRead(req, res) {
+    const { pool } = req;
+    const userId = req.session.user.id;
 
-module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead }
+    try {
+        if (pool.connected) {
+            const request = pool.request();
+            request.input("userId", userId);
+
+            await request.execute("MarkAllNotificationsAsRead");
+
+            res.status(200).send({
+                success: true,
+                message: "All notifications marked as read",
+            });
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
+module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead, markAllNotificationsAsRead }
