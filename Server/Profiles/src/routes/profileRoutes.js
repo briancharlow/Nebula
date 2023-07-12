@@ -3,7 +3,7 @@ const express = require("express");
 const profileRouter = express.Router();
 
 
-const { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser } = require("../Controllers/profileController");
+const { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead } = require("../Controllers/profileController");
 
 const { sessionAuthorization } = require("../middlewares/sessionAuthorization");
 
@@ -19,5 +19,8 @@ profileRouter.put("/deleteProfile", deleteProfile)
 profileRouter.get("/getProfile/:id", getUserProfile)
 profileRouter.post("/followUser", followUser)
 profileRouter.post("/unfollowUser", unfollowUser)
+profileRouter.get("/getNotifications", getNotifications)
+profileRouter.get("/getSingleNotification/:id", getSingleNotification)
+profileRouter.put("/markNotificationAsRead/:id", markNotificationAsRead)
 
 module.exports = profileRouter;

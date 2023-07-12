@@ -28,4 +28,14 @@ END;
 
 
 
+EXEC GetAllPosts
 
+ALTER TABLE Posts
+ALTER COLUMN is_deleted SET DEFAULT 0;
+
+
+select * from Posts
+
+UPDATE Posts
+SET is_deleted = 0
+WHERE is_deleted IS NULL;

@@ -3,7 +3,6 @@ CREATE PROCEDURE UnlikePost
   @userID INT
 AS
 BEGIN
-  SET NOCOUNT ON;
 
   -- Delete the like record from PostLikes table
   DELETE FROM PostLikes

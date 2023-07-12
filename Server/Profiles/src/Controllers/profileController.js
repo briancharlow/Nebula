@@ -124,7 +124,6 @@ async function getUserProfile(req, res) {
                     success: true,
                     message: "Successfully retrieved user profile",
                     profile: profile,
-                    posts: posts,
                 });
 
                 return profile;
@@ -154,10 +153,10 @@ async function followUser(req, res) {
                     message: "Successfully followed user",
                 });
 
-            } else if (result.recordset[0].Response === "You are already following this user") {
+            } else {
                 res.status(200).send({
                     success: false,
-                    message: "You are already following this user",
+                    message: result.recordset[0].Response,
                 });
 
             }
@@ -200,8 +199,80 @@ async function unfollowUser(req, res) {
     }
 }
 
+async function getNotifications(req, res) {
+    const { pool } = req;
+    const userId = req.session.user.id;
+
+    try {
+        if (pool.connected) {
+            const notificationsResults = await pool.request().input("userId", userId).execute("GetUserNotifications");
+            console.log(notificationsResults);
+            const notifications = notificationsResults.recordset;
+
+            if (notifications) {
+                res.status(200).send({
+                    success: true,
+                    message: "Successfully retrieved notifications",
+                    notifications: notifications,
+                });
+
+                return notifications;
+            }
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
+async function getSingleNotification(req, res) {
+    const { pool } = req;
+    const notificationId = req.params.id;
+
+    try {
+        if (pool.connected) {
+            const notificationResults = await pool.request().input("notificationId", notificationId).execute("GetSingleNotification");
+            const notification = notificationResults.recordset[0];
+
+            if (notification) {
+                res.status(200).send({
+                    success: true,
+                    message: "Successfully retrieved notification",
+                    notification: notification,
+                });
+
+                return notification;
+            }
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+async function markNotificationAsRead(req, res) {
+    const { pool } = req;
+    const notificationId = req.params.id;
+
+    try {
+        if (pool.connected) {
+            const notificationResults = await pool.request().input("notificationId", notificationId).execute("MarkNotificationAsRead");
+            const notification = notificationResults.recordset[0];
+
+            if (notification) {
+                res.status(200).send({
+                    success: true,
+                    message: "Successfully marked notification as read",
+                    notification: notification,
+                });
+
+                return notification;
+            }
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
 
 
 
-
-module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser }
+module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead }
