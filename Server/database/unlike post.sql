@@ -23,8 +23,8 @@ END;
 
 
 -- Example usage for UnlikePost
-EXEC UnlikePost @postID = 1, @userID = 2;
+EXEC UnlikePost @postID = 1, @userID = 4005;
 
 
-
+EXEC LikePost 4005, 1
 select * from PostLikes

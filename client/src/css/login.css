@@ -105,3 +105,8 @@ hr {
   letter-spacing: 0.5px;
   margin: 20px 0 30px;
 }
+label p{
+  font-size: 0.8rem;
+  color: var(--text);
+  text-align: left;
+}

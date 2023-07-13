@@ -4,36 +4,47 @@ import axios from "axios";
 import { BiArrowBack } from "react-icons/bi";
 import "../css/login.css";
 
-const SignIn = () => {
+const SignUp = () => {
   const navigate = useNavigate();
-  const handleSignUpClick = () => {
-    navigate("/signup");
+  const handleSignInClick = () => {
+    navigate("/signin");
   };
   const backHome = () => {
     navigate("/");
   };
+  const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
+   const [ContactNumber, setContactNumber] = useState("");
   const [Password, setPassword] = useState("");
+  const [c_password, setc_password] = useState("");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const loginData = {
+    if (Password !== c_password) {
+      alert("Password and confirm Password do not match");
+      return;
+    }
+    const registrationData = {
+      fullname: Name,
       email: Email,
+      phone_number: ContactNumber,
       password: Password,
+      c_password: c_password,
     };
     try {
       const response = await axios.post(
-        "http://localhost:5000/login",
-        loginData, { withCredentials: true }
+        "http://localhost:5000/register",
+        registrationData
       );
       console.log(response);
-      if (response.data.success) {
-        // Login successful, navigate to home page 
-        navigate("/createprofile");
+      if (response.status === 201) {
+       
+        navigate("/signin");
+
 
       } else {
-        // Handle login failure
-        alert("Login Failed Try Again");
+        alert("Registration Failed");
       }
     } catch (error) {
       if (error.response) {
@@ -52,7 +63,14 @@ const SignIn = () => {
         <BiArrowBack />
       </div>
       <form className="sign-up-form" onSubmit={handleSubmit}>
-        <h1>Sign In</h1>
+        <h1>Create Account</h1>
+        <input
+          type="text"
+          placeholder="Name"
+          className="input-box"
+          value={Name}
+          onChange={(e) => setName(e.target.value)}
+        />
         <input
           type="email"
           placeholder="Email"
@@ -61,18 +79,32 @@ const SignIn = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
+          type="text"
+          placeholder="Phone Number"
+          className="input-box"
+          value={ContactNumber}
+          onChange={(e) => setContactNumber(e.target.value)}
+        />
+        <input
           type="password"
           placeholder="Password"
           className="input-box"
           value={Password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          className="input-box"
+          value={c_password}
+          onChange={(e) => setc_password(e.target.value)}
+        />
 
-        <button className="sign-btn">Sign In</button>
+        <button className="sign-btn">Sign Up</button>
         <p>
-          Don't have an account?{" "}
-          <a href="#" onClick={handleSignUpClick}>
-            Sign Up
+          Already have an account?{" "}
+          <a href="#" onClick={handleSignInClick}>
+            Sign In
           </a>
         </p>
       </form>
@@ -80,4 +112,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

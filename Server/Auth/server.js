@@ -10,10 +10,15 @@ const RedisStore = require("connect-redis").default;
 
 const { createClient } = require("redis")
 const authRouter = require("./src/routes/authRoutes");
+const { options } = require("joi");
 
 const app = express()
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+    optionsSuccessStatus: 200
+}))
 
 async function connectToDatabase() {
     try {
