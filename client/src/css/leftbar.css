@@ -1,0 +1,16 @@
+/* leftbar.css */
+.leftbar {
+  width: 240px;
+  transition: width 0.3s;
+}
+
+.leftbar.closed {
+  width: 72px;
+}
+
+.toggle-button {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}

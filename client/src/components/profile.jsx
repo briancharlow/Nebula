@@ -100,7 +100,7 @@ const CreateProfile = () => {
           type="file"
           placeholder="Profile Picture"
           value={ProfilePicture}
-          onChange={(e) => setProfilePicture(e.target.value)}
+          onChange={(e) => uploadImage(e.target.value)}
         />
        </label>
        

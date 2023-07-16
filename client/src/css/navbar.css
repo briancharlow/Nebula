@@ -1,0 +1,26 @@
+.navbar {
+  background-color: #b3e5fc; /* Light blue color */
+  display: flex;
+  justify-content: space-between;
+}
+
+.search {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 25px;
+  padding: 5px 10px;
+}
+
+.search input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 5px;
+}
+
+/* 
+.create-form {
+  /* Style for the PostForm component (create post dropdown) */
+/* Customize as per your requirements */

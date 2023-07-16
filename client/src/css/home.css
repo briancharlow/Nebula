@@ -1,0 +1,27 @@
+.home {
+  display: grid;
+  grid-template-areas:
+    "navbar navbar navbar navbar navbar navbar"
+    "content content content content content content"
+    "content content content content content content";
+}
+.navbar {
+  grid-area: navbar;
+}
+.leftbar {
+  grid-area: leftbar;
+}
+.centeroutlet {
+  grid-area: centeroutlet;
+}
+.rightbar {
+  grid-area: rightbar;
+}
+
+.content {
+  display: grid;
+  grid-template-areas:
+    "leftbar centeroutlet centeroutlet centeroutlet rightbar"
+    "leftbar centeroutlet centeroutlet centeroutlet rightbar"
+    "leftbar centeroutlet centeroutlet centeroutlet rightbar";
+}
