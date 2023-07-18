@@ -13,10 +13,12 @@ const CreateProfile = () => {
   const [Username, setUsername] = useState("");
   const [ProfilePicture, setProfilePicture] = useState("");
   const [Location, setLocation] = useState("");
+  const [SelectedFile, setSelectedFile] = useState(null); // New state variable
 
   const uploadImage = (files) => {
+    console.log(files);
     const formData = new FormData();
-    formData.append( "file", files[0]);
+    formData.append("file", files[0]);
     formData.append("upload_preset", "hwx1s3ze");
     fetch("https://api.cloudinary.com/v1_1/dtkfsipoi/image/upload", {
       method: "POST",
@@ -27,6 +29,13 @@ const CreateProfile = () => {
         setProfilePicture(data.secure_url);
       });
   };
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    uploadImage(e.target.files);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const profileData = {
@@ -40,13 +49,13 @@ const CreateProfile = () => {
         "http://localhost:5010/createProfile",
         profileData,
         {
-            withCredentials: true,
+          withCredentials: true,
         }
       );
       console.log(response);
       if (response.data.success) {
         // Profile created successfully, navigate to user's pr
-        navigate("/signin");
+        navigate("/home");
       } else {
         // Handle profile creation failure
         alert("Profile Creation Failed Try Again");
@@ -69,7 +78,7 @@ const CreateProfile = () => {
       </div>
       <form className="sign-up-form" onSubmit={handleSubmit}>
         <h1>Create Profile</h1>
-         <input
+        <input
           type="text"
           placeholder="Username"
           className="input-box"
@@ -83,7 +92,6 @@ const CreateProfile = () => {
           value={Bio}
           onChange={(e) => setBio(e.target.value)}
         />
-        
         <input
           type="text"
           placeholder="Location"
@@ -91,19 +99,23 @@ const CreateProfile = () => {
           value={Location}
           onChange={(e) => setLocation(e.target.value)}
         />
-       <label>
-        <p>
-             Choose Profile Picture
-        </p>
+        <div className="file-input-container">
+          <label htmlFor="profilePicture" className="file-input-label">
+            Choose Profile Picture
+          </label>
+          <input
+            type="file"
+            id="profilePicture"
+            className="file-input"
            
-            <input
-          type="file"
-          placeholder="Profile Picture"
-          value={ProfilePicture}
-          onChange={(e) => uploadImage(e.target.value)}
-        />
-       </label>
-       
+            onChange={handleFileSelect}
+          />
+          {SelectedFile && (
+            <span className="file-selected-label">
+              {SelectedFile.name} selected
+            </span>
+          )}
+        </div>
 
         <button className="sign-btn">Create Profile</button>
       </form>

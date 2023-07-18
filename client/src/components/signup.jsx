@@ -10,7 +10,7 @@ const SignUp = () => {
     navigate("/signin");
   };
   const backHome = () => {
-    navigate("/");
+    navigate("/home");
   };
   const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
@@ -103,7 +103,7 @@ const SignUp = () => {
         <button className="sign-btn">Sign Up</button>
         <p>
           Already have an account?{" "}
-          <a href="#" onClick={handleSignInClick}>
+          <a href=" " onClick={handleSignInClick}>
             Sign In
           </a>
         </p>

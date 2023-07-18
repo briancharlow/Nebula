@@ -1,16 +1,23 @@
-/* leftbar.css */
 .leftbar {
-  width: 240px;
-  transition: width 0.3s;
+  width: 280px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 0;
 }
 
-.leftbar.closed {
-  width: 72px;
+.retract-button {
+  cursor: pointer;
 }
 
-.toggle-button {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+.retract-icon {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background-color: #000;
+  margin: 4px 0;
+}
+
+.leftbar .MuiListItemIcon-root {
+  min-width: 40px;
 }

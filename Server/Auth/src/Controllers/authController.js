@@ -91,6 +91,7 @@ async function loginUser(req, res) {
                 res.json({
                     success: true,
                     message: "log in successful",
+                    profile: user.profile_id,
                 });
             } else {
                 res.status(401).json({

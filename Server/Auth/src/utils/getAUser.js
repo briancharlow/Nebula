@@ -6,7 +6,7 @@ async function getAUser(email) {
     let sql = await mssql.connect(config)
     if (sql.connected) {
         let results = await sql.request()
-            .input("email", email)
+            .input("userEmail", email)
             .execute("GetUserByEmail")
         let user = results.recordset[0]
         console.log(results.recordset[0])

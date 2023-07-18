@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -11,10 +11,11 @@ import Brightness4Icon from "@material-ui/icons/Brightness4";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"; // Icon for retract button
 import "../css/leftbar.css";
+import "../css/navbar.css";
 
 const LeftBar = ({ isOpen, onClose }) => {
   return (
-    <Drawer variant="persistent" anchor="left" open={isOpen} className="leftbar">
+    <Drawer variant="persistent" anchor="left" open={isOpen} className={isOpen ? "leftbar open" : "leftbar"} style={{top: "60px"}}>
       <div className="toolbar">
         <ChevronLeftIcon onClick={onClose} className="retract-button" />
       </div>

@@ -29,7 +29,13 @@ const SignIn = () => {
       console.log(response);
       if (response.data.success) {
         // Login successful, navigate to home page 
-        navigate("/createprofile");
+        if(!response.data.profile){
+          navigate("/createprofile");
+        }
+        else{
+            navigate("/home");
+        }
+      
 
       } else {
         // Handle login failure
@@ -71,7 +77,7 @@ const SignIn = () => {
         <button className="sign-btn">Sign In</button>
         <p>
           Don't have an account?{" "}
-          <a href="#" onClick={handleSignUpClick}>
+          <a href=" " onClick={handleSignUpClick}>
             Sign Up
           </a>
         </p>

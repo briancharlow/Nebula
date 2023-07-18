@@ -1,26 +1,122 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .navbar {
-  background-color: #b3e5fc; /* Light blue color */
+  display: inline;
+  background-color: #f0f0f0;
+  height: 60px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+.toolbar {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+}
+.logo {
+  width: 70px;
+  height: 50px;
+  margin-left: 0px;
+
+  align-self: flex-start;
+}
+
+.menu-button {
+  padding: 6px;
+  border-radius: 4px;
+}
+
+.menu-icon {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: #000;
+  margin: 4px 0;
+  align-self: flex-start;
+}
+
+.MuiAppBar-colorPrimary {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.search .MuiSvgIcon-root {
+  margin-right: 8px;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+.create-icon {
+  color: #fff;
+}
+
+.profile-icon {
+  color: #000;
+}
+
+/* ... Existing CSS ... */
+
+.menu-button {
+  padding: 6px;
+  border-radius: 4px;
 }
 
 .search {
-  margin-left: 20px;
   display: flex;
   align-items: center;
-  background-color: #fff;
-  border-radius: 25px;
-  padding: 5px 10px;
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
-.search input {
-  border: none;
-  outline: none;
-  width: 100%;
-  padding: 5px;
+.search .MuiSvgIcon-root {
+  margin-right: 8px;
 }
 
-/* 
-.create-form {
-  /* Style for the PostForm component (create post dropdown) */
-/* Customize as per your requirements */
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+.create-icon {
+  color: #fff;
+}
+
+.profile-icon {
+  color: #000;
+}
+
+/* New CSS for LeftBar */
+.leftbar {
+  width: 0;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 0;
+  transition: width 0.3s;
+}
+
+.leftbar.open {
+  width: 280px;
+  transition: width 0.3s;
+}
+
+.retract-button {
+  cursor: pointer;
+}
+
+.retract-icon {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background-color: #000;
+  margin: 4px 0;
+}

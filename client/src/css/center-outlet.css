@@ -1,0 +1,174 @@
+.center-outlet {
+  width: 60%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.post {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+}
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.post-content {
+  margin-top: 12px;
+}
+
+.post-content p {
+  margin: 0;
+}
+
+.post-media {
+  max-width: 100%;
+  margin-top: 12px;
+}
+
+.post-actions {
+  margin-top: 12px;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: #666;
+}
+
+.icon {
+  font-size: 16px;
+}
+/* center-outlet.css */
+
+/* Add styling for the heart icon when liked */
+.icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.liked {
+  color: red;
+}
+
+/* Style the post container */
+.post {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.post-content {
+  margin-bottom: 0.5rem;
+}
+
+.post-media {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.comment {
+  margin-bottom: 0.5rem;
+}
+
+.comment-input {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.comment-input input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+}
+
+.comment-input button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.comment-input button .icon {
+  font-size: 1.2rem;
+}
+/* center-outlet.css */
+
+/* ... previous styles ... */
+
+/* Hide comments by default */
+.comment {
+  display: none;
+  margin-bottom: 0.5rem;
+}
+
+.showComments .comment {
+  display: block;
+}
+
+.comment-input {
+  display: none;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.showComments .comment-input {
+  display: flex;
+}

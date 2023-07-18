@@ -1,27 +1,231 @@
+/* home.css */
 .home {
-  display: grid;
-  grid-template-areas:
-    "navbar navbar navbar navbar navbar navbar"
-    "content content content content content content"
-    "content content content content content content";
-}
-.navbar {
-  grid-area: navbar;
-}
-.leftbar {
-  grid-area: leftbar;
-}
-.centeroutlet {
-  grid-area: centeroutlet;
-}
-.rightbar {
-  grid-area: rightbar;
+  display: flex;
+  flex-direction: column;
 }
 
-.content {
-  display: grid;
-  grid-template-areas:
-    "leftbar centeroutlet centeroutlet centeroutlet rightbar"
-    "leftbar centeroutlet centeroutlet centeroutlet rightbar"
-    "leftbar centeroutlet centeroutlet centeroutlet rightbar";
+.content-container {
+  display: flex;
+  overflow: hidden;
+  justify-content: space-between;
+  /* margin-top: 1rem; */
+}
+
+.leftbar {
+  width: fit-content;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 0;
+  transition: width 0.3s;
+  top: 60px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.MuiDrawer-paper {
+  top: 60px !important;
+}
+
+.leftbar h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #1da1f2;
+}
+
+.retract-button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.retract-icon {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background-color: #000;
+  margin: 4px 0;
+}
+
+.right-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+}
+
+.right-section h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.right-section .suggested {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.right-section .suggested img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.right-section .suggested p {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.right-section .suggested button {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 12px;
+}
+
+.center-outlet {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px;
+  margin-right: 300px;
+}
+
+.center-outlet h1 {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.center-outlet .posts {
+  gap: 20px;
+}
+
+.center-outlet .post {
+  padding: 20px;
+}
+
+.center-outlet .post-info {
+  display: flex;
+  align-items: center;
+}
+
+.center-outlet .post-info p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #657786;
+}
+
+.center-outlet .interactions {
+  display: flex;
+  gap: 20px;
+}
+
+.center-outlet .interactions div {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #657786;
+}
+
+.center-outlet .interactions div:hover {
+  color: #1da1f2;
+}
+
+.center-outlet .post-media {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+.center-outlet .comments-section {
+  margin-top: 12px;
+}
+
+.center-outlet .comment {
+  border-top: 1px solid #e1e8ed;
+  padding: 12px 0;
+}
+
+.center-outlet .comment-content {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.center-outlet .comment-content p {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.center-outlet .comment-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.center-outlet .replies-section {
+  margin-left: 50px;
+}
+
+.center-outlet .reply {
+  margin-top: 12px;
+}
+
+.center-outlet .reply-content p {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.center-outlet .reply-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rightbar {
+  width: 280px;
+  min-width: 280px;
+  flex-shrink: 0;
+  background-color: #f7f9fa;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: fixed;
+  top: 60px;
+  right: 0;
+}
+
+.rightbar h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.rightbar .suggested {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rightbar .suggested img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.rightbar .suggested p {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.rightbar .suggested button {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 12px;
 }

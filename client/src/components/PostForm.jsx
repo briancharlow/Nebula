@@ -1,63 +1,100 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "../css/login.css";
+import { FaImage, FaPaperPlane } from "react-icons/fa";
 
-const CreatePost = () => {
-  const [content, setContent] = useState("");
+import "../css/post-form.css";
+
+const PostForm = () => {
+  const [postContent, setPostContent] = useState("");
+  const [mediaPreview, setMediaPreview] = useState(null);
   const [mediaFile, setMediaFile] = useState(null);
 
-  const handleSubmit = async (e) => {
+  const handleMediaChange = (e) => {
+    const file = e.target.files[0];
+    setMediaFile(file);
+    setMediaPreview(URL.createObjectURL(file));
+  };
+
+  const handlePostSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("content", content);
-    formData.append("mediaFile", mediaFile);
 
+    // Upload media to Cloudinary if present
+    let mediaUrl = null;
+    if (mediaFile) {
+      const formData = new FormData();
+      formData.append("file", mediaFile);
+      formData.append("upload_preset", "hwx1s3ze");
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dtkfsipoi/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      mediaUrl = data.secure_url;
+    }
+
+    // Post data to the server
+    const postData = {
+      content: postContent,
+      mediaUrl: mediaUrl,
+    };
+    
     try {
-      const response = await axios.post("http://localhost:5020/createpost", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      let response = await axios.post("http://localhost:5020/createPost", postData, {
+        withCredentials: true,
       });
+      if (response.data.message === "Successfully created post") {
+      alert("Post created successfully");
 
-      console.log(response);
-      if (response.data.success) {
-        // Post created successfully, perform any desired action or show a success message
-      } else {
-        // Handle error case
+      // Clear form after successful post
+      setPostContent("");
+      setMediaFile(null);
+      setMediaPreview(null);
       }
     } catch (error) {
-      if (error.response) {
-        console.error("Server Error:", error.response.data);
-      } else if (error.request) {
-        console.error("No response from server:", error.request);
-      } else {
-        console.error("Error:", error.message);
-      }
+      console.error("Error creating post:", error);
     }
   };
 
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={handleSubmit}>
-        <h1>Create Post</h1>
+    <div className="post-form">
+      <div className="post-form-header">Create Post</div>
+      <form onSubmit={handlePostSubmit}>
         <textarea
-          type="text"
-          placeholder="Content"
-          className="input-box"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <input
-          type="file"
-          accept="image/*"
-          className="input-box"
-          onChange={(e) => setMediaFile(e.target.files[0])}
-        />
-
-        <button className="login-btn">Post</button>
+          className="post-content"
+          placeholder="What's on your mind?"
+          value={postContent}
+          onChange={(e) => setPostContent(e.target.value)}
+        ></textarea>
+        <div className="post-media-container">
+          {mediaPreview ? (
+            <img
+              src={mediaPreview}
+              alt="Media Preview"
+              className="post-media-preview"
+            />
+          ) : null}
+          <label htmlFor="post-media" className="post-media-label">
+            <FaImage className="media-icon" />
+            Add Media
+          </label>
+          <input
+            type="file"
+            id="post-media"
+            className="post-media-input"
+            onChange={handleMediaChange}
+          />
+        </div>
+        <button type="submit" className="post-button">
+          <FaPaperPlane className="post-icon" />
+          Post
+        </button>
+      
       </form>
     </div>
   );
 };
 
-export default CreatePost;
+export default PostForm;

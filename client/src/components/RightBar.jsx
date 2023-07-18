@@ -20,7 +20,6 @@ const RightBar = () => {
           Follow
         </Button>
       </div>
-      {/* Add more suggested people to follow */}
     </div>
   );
 };

@@ -63,6 +63,128 @@ async function getPost(req, res) {
         res.status(500).send(error.message);
     }
 }
+async function getAllPosts(req, res) {
+    const { pool } = req;
+
+    try {
+        if (pool.connected) {
+            const postResults = await pool.request().execute('GetAllPosts');
+            const posts = postResults.recordset;
+
+            if (posts.length > 0) {
+                const organizedPosts = organizePosts(posts);
+
+                // Convert the object of posts to an array and reverse it to get most recent posts first
+                const reversedPosts = Object.values(organizedPosts).reverse();
+
+                res.status(200).json({
+                    success: true,
+                    message: 'Successfully retrieved all posts',
+                    posts: reversedPosts,
+                });
+
+                return reversedPosts;
+            } else {
+                res.status(404).json({
+                    success: false,
+                    message: 'No posts found',
+                    posts: [],
+                });
+
+                return [];
+            }
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error occurred while retrieving posts',
+            error: error.message,
+        });
+    }
+}
+
+function organizePosts(posts) {
+    const organizedPosts = {};
+
+    // Loop through each post and organize the data
+    posts.forEach((post) => {
+        const {
+            post_id,
+            post_user_id,
+            post_content,
+            post_created_at,
+            post_username,
+            post_user_profile_picture,
+            post_likes_count,
+            post_comments_count,
+            post_media_url,
+            comment_id,
+            comment_user_id,
+            comment_content,
+            comment_created_at,
+            comment_likes_count,
+            reply_count,
+            reply_id,
+            reply_user_id,
+            reply_content,
+            reply_created_at,
+            reply_likes_count,
+            comment_username,
+            comment_user_profile_picture,
+            reply_username,
+            reply_user_profile_picture,
+        } = post;
+
+        // If the post doesn't exist in the organizedPosts object, initialize it
+        if (!organizedPosts[post_id]) {
+            organizedPosts[post_id] = {
+                post_id,
+                post_user_id,
+                post_content,
+                post_created_at,
+                post_username,
+                post_user_profile_picture,
+                post_likes_count,
+                post_comments_count,
+                post_media_url,
+                comments: {},
+            };
+        }
+
+        // If the comment doesn't exist in the organizedPosts object, initialize it
+        if (!organizedPosts[post_id].comments[comment_id]) {
+            organizedPosts[post_id].comments[comment_id] = {
+                comment_id,
+                comment_user_id,
+                comment_content,
+                comment_created_at,
+                comment_likes_count,
+                comment_username,
+                comment_user_profile_picture,
+                replies: {},
+            };
+        }
+
+        // Add the reply data to the comment
+        if (reply_id) {
+            organizedPosts[post_id].comments[comment_id].replies[reply_id] = {
+                reply_id,
+                reply_user_id,
+                reply_content,
+                reply_created_at,
+                reply_likes_count,
+                reply_username,
+                reply_user_profile_picture,
+            };
+        }
+    });
+
+    return organizedPosts;
+}
+
+
+
+
 
 async function deletePost(req, res) {
     const { pool } = req
@@ -359,30 +481,6 @@ async function UnlikeReply(req, res) {
     }
 }
 
-async function getAllPosts(req, res) {
-    const { pool } = req;
-
-    try {
-        if (pool.connected) {
-            const postsResults = await pool.request().execute("GetAllPosts");
-            console.log(postsResults);
-            const posts = postsResults.recordset;
-
-            if (posts) {
-                res.status(200).send({
-                    success: true,
-                    message: "Successfully retrieved posts",
-                    posts: posts,
-                });
-
-                return posts;
-            }
-        }
-    } catch (error) {
-        res.status(500).send(error.message);
-
-    }
-}
 
 
 module.exports = { createPost, deletePost, likePost, getPost, unlikePost, getPostsFollowing, commentPost, replyComment, likeComment, UnlikeComment, likeReply, UnlikeReply, getAllPosts }

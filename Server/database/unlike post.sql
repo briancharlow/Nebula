@@ -28,3 +28,6 @@ EXEC UnlikePost @postID = 1, @userID = 4005;
 
 EXEC LikePost 4005, 1
 select * from PostLikes
+select * from Users
+select * from Profiles
+select * from Posts
