@@ -68,10 +68,6 @@
   margin-right: 0.5rem;
 }
 
-.liked {
-  color: red;
-}
-
 /* Style the post container */
 .post {
   border: 1px solid #ccc;
@@ -114,14 +110,6 @@
   margin-bottom: 0.5rem;
 }
 
-.action-button {
-  display: flex;
-  align-items: center;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
 .comment {
   margin-bottom: 0.5rem;
 }
@@ -149,21 +137,11 @@
 .comment-input button .icon {
   font-size: 1.2rem;
 }
-/* center-outlet.css */
-
-/* ... previous styles ... */
-
-/* Comment Form Styles */
-.comment-input {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-}
 
 .comment-input input {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ccc;
+
   border-radius: 5px;
   outline: none;
 }

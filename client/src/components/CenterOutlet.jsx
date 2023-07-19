@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaHeart, FaComment } from "react-icons/fa";
-import { BsHeart, BsHeartFill, BsChatLeftText } from "react-icons/bs";
+import { BsChatLeftText } from "react-icons/bs";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import axios from "axios";
 import PostForm from "./PostForm";
@@ -8,6 +7,7 @@ import CommentForm from "./CommentForm";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../css/center-outlet.css";
+import CommentSection from "./CommentSection";
 
 const CenterOutlet = () => {
   const [posts, setPosts] = useState([]);
@@ -24,6 +24,7 @@ const CenterOutlet = () => {
             is_commenting: false,
             comments: [], // Track comments for each post
             commentInput: "", // Track comment input value for each post
+            show_comments: false, // Track if comments section should be shown
           }))
         );
       })
@@ -66,7 +67,7 @@ const CenterOutlet = () => {
 
   const handleComment = (postId) => {
     const updatedPosts = posts.map((post) =>
-      post.post_id === postId ? { ...post, is_commenting: !post.is_commenting } : post
+      post.post_id === postId ? { ...post, is_commenting: !post.is_commenting, show_comments: !post.show_comments } : post
     );
     setPosts(updatedPosts);
   };
@@ -168,13 +169,8 @@ const CenterOutlet = () => {
                 <CommentForm postId={post.post_id} handleCommentPost={handleCommentPost} />
               </div>
             )}
-            <div className="comments-section">
-              {post.comments.map((comment) => (
-                <div className="comment" key={comment.comment_id}>
-                  <p>{comment.comment_content}</p>
-                </div>
-              ))}
-            </div>
+            {/* Use CommentSection component here */}
+            {post.show_comments && <CommentSection comments={post.comments} />}
           </div>
         ))
       )}

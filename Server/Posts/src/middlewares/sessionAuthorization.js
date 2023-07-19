@@ -12,6 +12,8 @@ async function sessionAuthorization(req, res, next) {
         console.log(cookie)
         let sessionID = cookie.substring(16, 52)
         let session = await redisClient.get(sessionID)
+
+
         console.log(session)
         if (session == null) {
             res.status(401).send("You are not logged in");
@@ -37,7 +39,7 @@ async function sessionAuthorization(req, res, next) {
 
     } catch (error) {
         res.send(error.message)
-
+        console.log(error)
     }
 
 }

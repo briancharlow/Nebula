@@ -65,11 +65,12 @@ async function getPost(req, res) {
 }
 async function getAllPosts(req, res) {
     const { pool } = req;
-
+    console.log("Öutside pool connected")
     try {
         if (pool.connected) {
             const postResults = await pool.request().execute('GetAllPosts');
             const posts = postResults.recordset;
+            console.log("Inside pool connected")
 
             if (posts.length > 0) {
                 const organizedPosts = organizePosts(posts);
