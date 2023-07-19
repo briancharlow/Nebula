@@ -72,6 +72,11 @@ const PostForm = () => {
         ></textarea>
         <div className="post-controls">
         <div className="post-media-container">
+         
+          <label htmlFor="post-media" className="post-media-label">
+            <FaImage className="media-icon" />
+            Add Media
+          </label>
           {mediaPreview ? (
             <img
               src={mediaPreview}
@@ -79,10 +84,7 @@ const PostForm = () => {
               className="post-media-preview"
             />
           ) : null}
-          <label htmlFor="post-media" className="post-media-label">
-            <FaImage className="media-icon" />
-            Add Media
-          </label>
+         
           <input
             type="file"
             id="post-media"

@@ -62,6 +62,7 @@
   display: flex;
   align-items: center;
   transition: background-color 0.3s ease;
+  margin-right: 1em;
 }
 
 .post-media-label:hover {

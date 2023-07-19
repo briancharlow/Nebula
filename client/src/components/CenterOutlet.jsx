@@ -1,6 +1,8 @@
+// CenterOutlet.jsx
+
 import React, { useState, useEffect } from "react";
 import { BsChatLeftText } from "react-icons/bs";
-import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
+import { AiOutlineLike, AiFillLike, AiOutlineDislike, AiFillDislike } from "react-icons/ai";
 import axios from "axios";
 import PostForm from "./PostForm";
 import CommentForm from "./CommentForm";
@@ -51,7 +53,7 @@ const CenterOutlet = () => {
 
   const handleUnlikePost = (postId) => {
     axios
-      .post("http://localhost:5020/unlikePost", { postId }, { withCredentials: true })
+      .delete("http://localhost:5020/unlikePost", { data: { postId }, withCredentials: true })
       .then((res) => {
         const updatedPosts = posts.map((post) =>
           post.post_id === postId
@@ -110,6 +112,50 @@ const CenterOutlet = () => {
       });
   };
 
+  const handleLikeComment = (postId, commentId) => {
+    axios
+      .post("http://localhost:5020/likeComment", { commentId }, { withCredentials: true })
+      .then((res) => {
+        const updatedPosts = posts.map((post) => {
+          if (post.post_id === postId) {
+            const updatedComments = post.comments.map((comment) =>
+              comment.comment_id === commentId
+                ? { ...comment, likes_count: comment.likes_count + 1, is_liked: true }
+                : comment
+            );
+            return { ...post, comments: updatedComments };
+          }
+          return post;
+        });
+        setPosts(updatedPosts);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleUnlikeComment = (postId, commentId) => {
+    axios
+      .delete("http://localhost:5020/unlikeComment", { data: { commentId }, withCredentials: true })
+      .then((res) => {
+        const updatedPosts = posts.map((post) => {
+          if (post.post_id === postId) {
+            const updatedComments = post.comments.map((comment) =>
+              comment.comment_id === commentId
+                ? { ...comment, likes_count: comment.likes_count - 1, is_liked: false }
+                : comment
+            );
+            return { ...post, comments: updatedComments };
+          }
+          return post;
+        });
+        setPosts(updatedPosts);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="center-outlet">
       <PostForm />
@@ -149,7 +195,7 @@ const CenterOutlet = () => {
               >
                 {post.is_liked ? (
                   <>
-                    <AiOutlineDislike className="icon" style={{ color: "red" }} />
+                    <AiFillDislike className="icon" style={{ color: "red" }} />
                     {post.post_likes_count} Likes
                   </>
                 ) : (
@@ -170,7 +216,7 @@ const CenterOutlet = () => {
               </div>
             )}
             {/* Use CommentSection component here */}
-            {post.show_comments && <CommentSection comments={post.comments} />}
+            {post.show_comments && <CommentSection comments={post.comments} handleLikeComment={handleLikeComment} handleUnlikeComment={handleUnlikeComment} />}
           </div>
         ))
       )}
