@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FaHeart, FaComment } from "react-icons/fa";
-import { BsHeart, BsHeartFill } from "react-icons/bs";
-import { BiLike, BiDislike } from "react-icons/bi";
+import { BsHeart, BsHeartFill, BsChatLeftText } from "react-icons/bs";
+import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import axios from "axios";
 import PostForm from "./PostForm";
+import CommentForm from "./CommentForm";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../css/center-outlet.css";
 
 const CenterOutlet = () => {
@@ -75,14 +78,14 @@ const CenterOutlet = () => {
     setPosts(updatedPosts);
   };
 
-  const handleCommentPost = (postId) => {
+  const handleCommentPost = (postId, content) => {
     const post = posts.find((post) => post.post_id === postId);
-    if (!post || !post.commentInput) return;
+    if (!post || !content) return;
 
     axios
       .post(
         "http://localhost:5020/commentPost",
-        { postId, content: post.commentInput },
+        { postId, content },
         { withCredentials: true }
       )
       .then((res) => {
@@ -98,15 +101,18 @@ const CenterOutlet = () => {
             : post
         );
         setPosts(updatedPosts);
+        toast.success("Comment added successfully!");
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Error occurred while adding comment.");
       });
   };
 
   return (
     <div className="center-outlet">
       <PostForm />
+      <ToastContainer />
       {posts.length === 0 ? (
         <div>No posts available</div>
       ) : (
@@ -120,9 +126,9 @@ const CenterOutlet = () => {
               />
               <span className="username">{post.post_username}</span>
             </div>
-            <div className="post-content">
+            <div className="info">
               <p>{post.post_content}</p>
-            </div>
+            
             {post.post_media_url && (
               <img
                 src={post.post_media_url}
@@ -130,6 +136,7 @@ const CenterOutlet = () => {
                 className="post-media"
               />
             )}
+            </div>
             <div className="post-actions">
               <button
                 className="action-button"
@@ -141,35 +148,24 @@ const CenterOutlet = () => {
               >
                 {post.is_liked ? (
                   <>
-                    <BiDislike className="icon" style={{ color: "red" }} />
+                    <AiOutlineDislike className="icon" style={{ color: "red" }} />
                     {post.post_likes_count} Likes
                   </>
                 ) : (
                   <>
-                    <BiLike className="icon" />
+                    <AiOutlineLike className="icon" />
                     {post.post_likes_count} Likes
                   </>
                 )}
               </button>
               <button className="action-button" onClick={() => handleComment(post.post_id)}>
-                <FaComment className="icon" />
+                <BsChatLeftText className="icon" />
                 {post.post_comments_count} Comments
               </button>
             </div>
             {post.is_commenting && (
               <div className="comment-input">
-                <input
-                  type="text"
-                  placeholder="Write a comment..."
-                  value={post.commentInput}
-                  onChange={(e) => handleCommentInputChange(post.post_id, e.target.value)}
-                />
-                <button
-                  className="action-button"
-                  onClick={() => handleCommentPost(post.post_id)}
-                >
-                  Send
-                </button>
+                <CommentForm postId={post.post_id} handleCommentPost={handleCommentPost} />
               </div>
             )}
             <div className="comments-section">

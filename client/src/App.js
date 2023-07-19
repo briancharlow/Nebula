@@ -3,7 +3,7 @@ import SignUp from "./components/signup";
 import SignIn from "./components/login";
 import Home from "./components/home";
 import CreateProfile from "./components/profile";
-
+import CommentForm from "./components/CommentForm";
 
 import {
   createBrowserRouter,
@@ -21,6 +21,8 @@ const myRouter = createBrowserRouter(
       <Route path="/signin" element={<SignIn />} />
       <Route path="/home" element={<Home />} />
       <Route path="/createprofile" element={<CreateProfile />} />
+      <Route path="/comment" element={<CommentForm />} />
+
     </Route>
   )
 );

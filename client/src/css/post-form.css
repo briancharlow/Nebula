@@ -1,10 +1,24 @@
+/* css/post-form.css */
+
 .post-form {
   border: 1px solid #e1e8ed;
   background-color: #ffffff;
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 15px;
+  position: sticky;
+  top: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  -webkit-backdrop-filter: blur(100px);
+  -o-backdrop-filter: blur(100px);
+  -moz-backdrop-filter: blur(100px);
+  backdrop-filter: blur(100px);
+}
+.post-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .post-form-header {

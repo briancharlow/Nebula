@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { FaImage, FaPaperPlane } from "react-icons/fa";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../css/post-form.css";
 
 const PostForm = () => {
@@ -46,7 +47,7 @@ const PostForm = () => {
         withCredentials: true,
       });
       if (response.data.message === "Successfully created post") {
-      alert("Post created successfully");
+      toast.success("Post created successfully");
 
       // Clear form after successful post
       setPostContent("");
@@ -54,7 +55,8 @@ const PostForm = () => {
       setMediaPreview(null);
       }
     } catch (error) {
-      console.error("Error creating post:", error);
+      console.log(error);
+      toast.error("Error creating post");
     }
   };
 
@@ -68,6 +70,7 @@ const PostForm = () => {
           value={postContent}
           onChange={(e) => setPostContent(e.target.value)}
         ></textarea>
+        <div className="post-controls">
         <div className="post-media-container">
           {mediaPreview ? (
             <img
@@ -91,6 +94,7 @@ const PostForm = () => {
           <FaPaperPlane className="post-icon" />
           Post
         </button>
+        </div>
       
       </form>
     </div>
