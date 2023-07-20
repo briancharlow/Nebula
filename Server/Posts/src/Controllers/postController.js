@@ -355,7 +355,7 @@ async function replyComment(req, res) {
                 .input("userId", userId)
                 .input("content", content)
                 .input("commentId", commentId)
-                .execute("ReplyToComment");
+                .execute("AddReplyToComment");
 
             console.log(replyResults);
             const reply = replyResults.recordset[0];
@@ -386,17 +386,17 @@ async function likeComment(req, res) {
             console.log(likeResults)
             const like = likeResults.recordset[0];
 
-            if (like.Message === 'Comment liked successfully') {
+            if (like.Message === 'Comment liked successfully.') {
                 res.status(200).send({
                     success: true,
-                    like: like,
+                    like: like.Message,
                 });
 
             }
             else {
                 res.status(200).send({
                     success: false,
-                    like: like,
+                    like: like.Message,
                 });
             }
 
@@ -413,18 +413,27 @@ async function UnlikeComment(req, res) {
 
     try {
         if (pool.connected) {
-            const unlikeResults = await pool.request().input("commentId", commentId).input("userId", userId).execute("UnlikeComment");
+            const unlikeResults = await pool.request().input("commentID", commentId).input("userID", userId).execute("UnlikeComment");
 
             console.log(unlikeResults)
             const unlike = unlikeResults.recordset[0];
 
-            if (unlike) {
+            if (unlike.Result === 'Comment unliked successfully') {
                 res.status(200).send({
                     success: true,
                     message: "Successfully unliked comment",
                     unlike: unlike,
                 });
             }
+            else {
+                res.status(200).send({
+                    success: false,
+                    message: unlike.Result
+                }
+                );
+
+            }
+
         }
     } catch (error) {
         res.status(500).send(error.message);
@@ -439,14 +448,22 @@ async function likeReply(req, res) {
 
     try {
         if (pool.connected) {
-            const likeResults = await pool.request().input("replyId", replyId).input("userId", userId).execute("LikeReply");
+            const likeResults = await pool.request().input("reply_id", replyId).input("user_id", userId).execute("LikeReply");
             console.log(likeResults);
 
             const like = likeResults.recordset[0];
 
-            if (like) {
+            if (like.Message === "Reply liked successfully.") {
                 res.status(200).send({
                     success: true,
+                    message: "Successfully liked reply",
+                    like: like,
+                });
+
+            }
+            else {
+                res.status(200).send({
+                    success: false,
                     message: "Successfully liked reply",
                     like: like,
                 });
@@ -465,16 +482,71 @@ async function UnlikeReply(req, res) {
 
     try {
         if (pool.connected) {
-            const unlikeResults = await pool.request().input("replyId", replyId).input("userId", userId).execute("UnlikeReply");
+            const unlikeResults = await pool.request().input("replyID", replyId).input("userID", userId).execute("UnlikeReply");
             console.log(unlikeResults);
             const unlike = unlikeResults.recordset[0];
 
-            if (unlike) {
+            if (unlike.Result === "Reply unliked successfully") {
                 res.status(200).send({
                     success: true,
-                    message: "Successfully unliked reply",
-                    unlike: unlike,
+                    message: unlike.Result,
                 });
+            }
+            else {
+                res.status(201).send({
+                    success: false,
+                    message: unlike.Result,
+                });
+            }
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+async function getComments(req, res) {
+    const { pool } = req;
+    const postId = req.params.postId;
+
+    try {
+        if (pool.connected) {
+            const commentsResults = await pool.request().input("postID", postId).execute("GetPostComments");
+            console.log(commentsResults);
+            const comments = commentsResults.recordset;
+
+            if (comments) {
+                res.status(200).send({
+                    success: true,
+                    message: "Successfully retrieved comments",
+                    comments: comments,
+                });
+
+                return comments;
+            }
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+async function getReplies(req, res) {
+    const { pool } = req;
+    const commentId = req.params.commentId;
+
+    try {
+        if (pool.connected) {
+            const repliesResults = await pool.request().input("commentId", commentId).execute("GetRepliesToCommentWithLikes");
+            console.log(repliesResults);
+            const replies = repliesResults.recordset;
+
+            if (replies) {
+                res.status(200).send({
+                    success: true,
+                    message: "Successfully retrieved replies",
+                    replies: replies,
+                });
+
+                return replies;
             }
         }
     } catch (error) {
@@ -484,4 +556,5 @@ async function UnlikeReply(req, res) {
 
 
 
-module.exports = { createPost, deletePost, likePost, getPost, unlikePost, getPostsFollowing, commentPost, replyComment, likeComment, UnlikeComment, likeReply, UnlikeReply, getAllPosts }
+
+module.exports = { createPost, deletePost, likePost, getPost, unlikePost, getPostsFollowing, commentPost, replyComment, likeComment, UnlikeComment, likeReply, UnlikeReply, getAllPosts, getComments, getReplies }

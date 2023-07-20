@@ -31,3 +31,7 @@ select * from PostLikes
 select * from Users
 select * from Profiles
 select * from Posts
+select * from PostMedia
+
+
+EXEC GetAllPosts

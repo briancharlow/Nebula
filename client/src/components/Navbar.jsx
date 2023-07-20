@@ -7,7 +7,9 @@ import SearchIcon from "@material-ui/icons/Search";
 import PersonIcon from "@material-ui/icons/Person";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"; // Icon for reveal button
 import Logo from "../img/logo2.png";
+import { Avatar } from "@material-ui/core";
 import "../css/navbar.css";
+
 
 const Navbar = ({ onToggleLeftBar }) => {
   
@@ -29,7 +31,7 @@ const Navbar = ({ onToggleLeftBar }) => {
         </div>
         
         <IconButton>
-          <PersonIcon className="profile-icon" />
+          <Avatar  className="profile-icon" />
         </IconButton>
       </Toolbar>
     </AppBar>

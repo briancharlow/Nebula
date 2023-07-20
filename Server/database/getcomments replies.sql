@@ -1,23 +1,16 @@
-ALTER PROCEDURE GetCommentReplies
-  @commentID INT
+CREATE PROCEDURE GetRepliesToCommentWithLikes
+  @commentId INT
 AS
 BEGIN
-  SET NOCOUNT ON;
-
-  SELECT r.id AS reply_id, r.content AS reply_content, COUNT(rl.id) AS likes_count,
-         c.id AS comment_id, pr.username AS replier_username, r.created_at
-  FROM Replies r
-  LEFT JOIN RepliesLikes rl ON r.id = rl.reply_id
-  INNER JOIN Comments c ON r.comment_id = c.id
-  INNER JOIN Profiles pr ON r.user_id = pr.user_id
-  WHERE r.comment_id = @commentID
-  GROUP BY r.id, r.content, c.id, pr.username, r.created_at;
+  SELECT
+    R.id AS reply_id,
+    R.content AS reply_content,
+    R.created_at AS reply_created_at,
+    P.profile_picture AS reply_creator_profile_picture,
+    P.username AS reply_creator_username,
+    (SELECT COUNT(*) FROM RepliesLikes WHERE reply_id = R.id) AS reply_likes_count
+  FROM Replies AS R
+  INNER JOIN Users AS U ON R.user_id = U.id
+  INNER JOIN Profiles AS P ON U.id = P.user_id
+  WHERE R.comment_id = @commentId;
 END;
-
-
-SELECT * FROM Comments
-SELECT * FROM Replies
-EXEC GetCommentReplies @commentID = 1;
-EXEC GetPostDetails @postID = 1;
-EXEC GetPostComments @postID = 1;
-

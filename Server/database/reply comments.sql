@@ -1,26 +1,34 @@
-CREATE PROCEDURE ReplyToComment
+CREATE PROCEDURE AddReplyToComment
   @commentId INT,
   @userId INT,
   @content VARCHAR(255)
 AS
 BEGIN
-  SET NOCOUNT ON;
+  DECLARE @replyId INT;
 
-  -- Insert reply
+  -- Check if the comment exists
+  IF NOT EXISTS (SELECT 1 FROM Comments WHERE id = @commentId)
+  BEGIN
+    RAISERROR('The specified comment does not exist.', 16, 1);
+    RETURN;
+  END;
+
+  -- Check if the user exists
+  IF NOT EXISTS (SELECT 1 FROM Users WHERE id = @userId)
+  BEGIN
+    RAISERROR('The specified user does not exist.', 16, 1);
+    RETURN;
+  END;
+
+  -- Insert the reply into the Replies table
   INSERT INTO Replies (user_id, comment_id, content, created_at)
-  VALUES (@userId, @commentId, @content, GETDATE());
+  VALUES (@userId, @commentId, @content, CURRENT_TIMESTAMP);
 
-  -- Select the newly inserted reply
-  SELECT * FROM Replies WHERE id = SCOPE_IDENTITY();
+  -- Get the ID of the newly inserted reply
+  SET @replyId = SCOPE_IDENTITY();
+
+  -- Return the ID of the newly inserted reply
+  SELECT @replyId AS reply_id;
 END;
 
-
-
--- Execute ReplyToComment procedure
-EXEC ReplyToComment
-  @commentId = 2,
-  @userId = 3,
-  @content = 'Thank you for your comment!'
-
-  
-  select * from Notifications
+EXEC AddReplyToComment 3014, 4005, 'i love this content'
