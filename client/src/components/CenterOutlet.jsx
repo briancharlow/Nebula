@@ -31,7 +31,7 @@ const CenterOutlet = () => {
         );
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err);
       });
   }, []);
 
@@ -47,7 +47,7 @@ const CenterOutlet = () => {
         setPosts(updatedPosts);
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err);
       });
   };
 
@@ -63,7 +63,7 @@ const CenterOutlet = () => {
         setPosts(updatedPosts);
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err);
       });
   };
 
@@ -130,7 +130,7 @@ const CenterOutlet = () => {
         setPosts(updatedPosts);
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err);
       });
   };
 
@@ -152,7 +152,7 @@ const CenterOutlet = () => {
         setPosts(updatedPosts);
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err);
       });
   };
 

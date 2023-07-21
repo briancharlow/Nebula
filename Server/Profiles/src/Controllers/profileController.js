@@ -133,6 +133,35 @@ async function getUserProfile(req, res) {
         res.status(500).send(error.message);
     }
 }
+getOwnProfile = async (req, res) => {
+    const { pool } = req;
+    const userId = req.session.user.id;
+
+    try {
+        if (pool.connected) {
+            const profileResults = await pool.request().input("userId", userId).execute("GetUserProfile");
+            const profile = profileResults.recordset[0];
+
+            if (profile) {
+                const postsResults = await pool.request().input("userId", userId).execute("GetUserPosts");
+                const posts = postsResults.recordset;
+
+                profile.posts = posts;
+
+                res.status(200).send({
+                    success: true,
+                    message: "Successfully retrieved user profile",
+                    profile: profile,
+                });
+
+                return profile;
+            }
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
 async function followUser(req, res) {
     const { pool } = req;
     const followerId = req.session.user.id;
@@ -300,4 +329,4 @@ async function markAllNotificationsAsRead(req, res) {
 }
 
 
-module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead, markAllNotificationsAsRead }
+module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead, markAllNotificationsAsRead, getOwnProfile }

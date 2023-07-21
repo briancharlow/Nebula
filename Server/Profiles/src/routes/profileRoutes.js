@@ -3,7 +3,7 @@ const express = require("express");
 const profileRouter = express.Router();
 
 
-const { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead, markAllNotificationsAsRead } = require("../Controllers/profileController");
+const { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead, markAllNotificationsAsRead, getOwnProfile } = require("../Controllers/profileController");
 
 const { sessionAuthorization } = require("../middlewares/sessionAuthorization");
 
@@ -17,6 +17,7 @@ profileRouter.post("/createProfile", newProfileMiddleware, createProfile)
 profileRouter.put("/updateProfile", newProfileMiddleware, updateProfile)
 profileRouter.put("/deleteProfile", deleteProfile)
 profileRouter.get("/getProfile/:id", getUserProfile)
+profileRouter.get("/Profile", getOwnProfile)
 profileRouter.post("/followUser", followUser)
 profileRouter.post("/unfollowUser", unfollowUser)
 profileRouter.get("/getNotifications", getNotifications)

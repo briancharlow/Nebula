@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BiArrowBack } from "react-icons/bi";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../css/login.css";
 
 const SignIn = () => {
@@ -15,6 +17,8 @@ const SignIn = () => {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
 
+  // No need to call toast.configure(), just import toast from react-toastify
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const loginData = {
@@ -24,22 +28,21 @@ const SignIn = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/login",
-        loginData, { withCredentials: true }
+        loginData,
+        { withCredentials: true }
       );
       console.log(response);
       if (response.data.success) {
-        // Login successful, navigate to home page 
-        if(!response.data.profile){
+        // Login successful, navigate to home page
+        if (!response.data.profile) {
           navigate("/createprofile");
+        } else {
+          navigate("/home");
         }
-        else{
-            navigate("/home");
-        }
-      
-
+        toast.success("Login successful!");
       } else {
         // Handle login failure
-        alert("Login Failed Try Again");
+        toast.error("Login Failed. Please try again.");
       }
     } catch (error) {
       if (error.response) {
@@ -49,6 +52,7 @@ const SignIn = () => {
       } else {
         console.error("Error:", error.message);
       }
+      toast.error("An error occurred. Please try again later.");
     }
   };
 
