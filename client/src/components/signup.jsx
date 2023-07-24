@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BiArrowBack } from "react-icons/bi";
 import "../css/login.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -10,7 +12,7 @@ const SignUp = () => {
     navigate("/signin");
   };
   const backHome = () => {
-    navigate("/home");
+    navigate("/");
   };
   const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
@@ -22,7 +24,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (Password !== c_password) {
-      alert("Password and confirm Password do not match");
+      toast.error("Password and confirm Password do not match");
       return;
     }
     const registrationData = {
@@ -39,15 +41,16 @@ const SignUp = () => {
       );
       console.log(response);
       if (response.status === 201) {
-       
+       toast.success("Sign Up Successful! Log in and explore the stars!");
         navigate("/signin");
 
 
       } else {
-        alert("Registration Failed");
+        toast.error("Enter Valid Details");
       }
     } catch (error) {
       if (error.response) {
+        toast.error(error.response.data.message);
         console.error("Server Error:", error.response.data);
       } else if (error.request) {
         console.error("No response from server:", error.request);
@@ -108,6 +111,7 @@ const SignUp = () => {
           </a>
         </p>
       </form>
+      <ToastContainer />
     </div>
   );
 };

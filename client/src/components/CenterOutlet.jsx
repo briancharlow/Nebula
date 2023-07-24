@@ -1,8 +1,12 @@
-// CenterOutlet.jsx
-
 import React, { useState, useEffect } from "react";
 import { BsChatLeftText } from "react-icons/bs";
-import { AiOutlineLike, AiFillLike, AiOutlineDislike, AiFillDislike } from "react-icons/ai";
+import {
+  AiOutlineLike,
+  AiFillLike,
+  AiOutlineDislike,
+  AiFillDislike,
+} from "react-icons/ai";
+import { Avatar } from "@material-ui/core"; // Import Avatar from Material-UI
 import axios from "axios";
 import PostForm from "./PostForm";
 import CommentForm from "./CommentForm";
@@ -37,11 +41,19 @@ const CenterOutlet = () => {
 
   const handleLikePost = (postId) => {
     axios
-      .post("http://localhost:5020/likePost", { postId }, { withCredentials: true })
+      .post(
+        "http://localhost:5020/likePost",
+        { postId },
+        { withCredentials: true }
+      )
       .then((res) => {
         const updatedPosts = posts.map((post) =>
           post.post_id === postId
-            ? { ...post, post_likes_count: post.post_likes_count + 1, is_liked: true }
+            ? {
+                ...post,
+                post_likes_count: post.post_likes_count + 1,
+                is_liked: true,
+              }
             : post
         );
         setPosts(updatedPosts);
@@ -53,11 +65,18 @@ const CenterOutlet = () => {
 
   const handleUnlikePost = (postId) => {
     axios
-      .delete("http://localhost:5020/unlikePost", { data: { postId }, withCredentials: true })
+      .delete("http://localhost:5020/unlikePost", {
+        data: { postId },
+        withCredentials: true,
+      })
       .then((res) => {
         const updatedPosts = posts.map((post) =>
           post.post_id === postId
-            ? { ...post, post_likes_count: post.post_likes_count - 1, is_liked: false }
+            ? {
+                ...post,
+                post_likes_count: post.post_likes_count - 1,
+                is_liked: false,
+              }
             : post
         );
         setPosts(updatedPosts);
@@ -69,7 +88,13 @@ const CenterOutlet = () => {
 
   const handleComment = (postId) => {
     const updatedPosts = posts.map((post) =>
-      post.post_id === postId ? { ...post, is_commenting: !post.is_commenting, show_comments: !post.show_comments } : post
+      post.post_id === postId
+        ? {
+            ...post,
+            is_commenting: !post.is_commenting,
+            show_comments: !post.show_comments,
+          }
+        : post
     );
     setPosts(updatedPosts);
   };
@@ -114,13 +139,21 @@ const CenterOutlet = () => {
 
   const handleLikeComment = (postId, commentId) => {
     axios
-      .post("http://localhost:5020/likeComment", { commentId }, { withCredentials: true })
+      .post(
+        "http://localhost:5020/likeComment",
+        { commentId },
+        { withCredentials: true }
+      )
       .then((res) => {
         const updatedPosts = posts.map((post) => {
           if (post.post_id === postId) {
             const updatedComments = post.comments.map((comment) =>
               comment.comment_id === commentId
-                ? { ...comment, likes_count: comment.likes_count + 1, is_liked: true }
+                ? {
+                    ...comment,
+                    likes_count: comment.likes_count + 1,
+                    is_liked: true,
+                  }
                 : comment
             );
             return { ...post, comments: updatedComments };
@@ -136,13 +169,20 @@ const CenterOutlet = () => {
 
   const handleUnlikeComment = (postId, commentId) => {
     axios
-      .delete("http://localhost:5020/unlikeComment", { data: { commentId }, withCredentials: true })
+      .delete("http://localhost:5020/unlikeComment", {
+        data: { commentId },
+        withCredentials: true,
+      })
       .then((res) => {
         const updatedPosts = posts.map((post) => {
           if (post.post_id === postId) {
             const updatedComments = post.comments.map((comment) =>
               comment.comment_id === commentId
-                ? { ...comment, likes_count: comment.likes_count - 1, is_liked: false }
+                ? {
+                    ...comment,
+                    likes_count: comment.likes_count - 1,
+                    is_liked: false,
+                  }
                 : comment
             );
             return { ...post, comments: updatedComments };
@@ -166,23 +206,30 @@ const CenterOutlet = () => {
         posts.map((post) => (
           <div className="post" key={post.post_id}>
             <div className="post-header">
-              <img
-                src={post.post_user_profile_picture}
-                alt="Profile"
-                className="profile-picture"
-              />
+              {/* Use Avatar as the default profile picture */}
+              {post.post_user_profile_picture ? (
+                <img
+                  src={post.post_user_profile_picture}
+                  alt="Profile"
+                  className="profile-picture"
+                />
+              ) : (
+                <Avatar className="profile-picture">
+                  {post.post_username[0]}
+                </Avatar>
+              )}
               <span className="username">{post.post_username}</span>
             </div>
             <div className="info">
               <p>{post.post_content}</p>
-            
-            {post.post_media_url && (
-              <img
-                src={post.post_media_url}
-                alt="Post Media"
-                className="post-media"
-              />
-            )}
+
+              {post.post_media_url && (
+                <img
+                  src={post.post_media_url}
+                  alt="Post Media"
+                  className="post-media"
+                />
+              )}
             </div>
             <div className="post-actions">
               <button
@@ -205,18 +252,30 @@ const CenterOutlet = () => {
                   </>
                 )}
               </button>
-              <button className="action-button" onClick={() => handleComment(post.post_id)}>
+              <button
+                className="action-button"
+                onClick={() => handleComment(post.post_id)}
+              >
                 <BsChatLeftText className="icon" />
                 {post.post_comments_count} Comments
               </button>
             </div>
             {post.is_commenting && (
               <div className="comment-input">
-                <CommentForm postId={post.post_id} handleCommentPost={handleCommentPost} />
+                <CommentForm
+                  postId={post.post_id}
+                  handleCommentPost={handleCommentPost}
+                />
               </div>
             )}
             {/* Use CommentSection component here */}
-            {post.show_comments && <CommentSection comments={post.comments} handleLikeComment={handleLikeComment} handleUnlikeComment={handleUnlikeComment} />}
+            {post.show_comments && (
+              <CommentSection
+                comments={post.comments}
+                handleLikeComment={handleLikeComment}
+                handleUnlikeComment={handleUnlikeComment}
+              />
+            )}
           </div>
         ))
       )}

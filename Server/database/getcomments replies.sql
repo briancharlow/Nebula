@@ -14,3 +14,6 @@ BEGIN
   INNER JOIN Profiles AS P ON U.id = P.user_id
   WHERE R.comment_id = @commentId;
 END;
+
+
+EXEc GetRepliesToCommentWithLikes 3014

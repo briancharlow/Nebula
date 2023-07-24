@@ -65,12 +65,12 @@ async function getPost(req, res) {
 }
 async function getAllPosts(req, res) {
     const { pool } = req;
-    console.log("Öutside pool connected")
+    console.log("Öutside pool connected");
     try {
         if (pool.connected) {
-            const postResults = await pool.request().execute('GetAllPosts');
+            const postResults = await pool.request().execute("GetAllPosts");
             const posts = postResults.recordset;
-            console.log("Inside pool connected")
+            console.log("Inside pool connected");
 
             if (posts.length > 0) {
                 const organizedPosts = organizePosts(posts);
@@ -80,7 +80,7 @@ async function getAllPosts(req, res) {
 
                 res.status(200).json({
                     success: true,
-                    message: 'Successfully retrieved all posts',
+                    message: "Successfully retrieved all posts",
                     posts: reversedPosts,
                 });
 
@@ -88,7 +88,7 @@ async function getAllPosts(req, res) {
             } else {
                 res.status(404).json({
                     success: false,
-                    message: 'No posts found',
+                    message: "No posts found",
                     posts: [],
                 });
 
@@ -98,7 +98,7 @@ async function getAllPosts(req, res) {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Error occurred while retrieving posts',
+            message: "Error occurred while retrieving posts",
             error: error.message,
         });
     }
@@ -124,7 +124,6 @@ function organizePosts(posts) {
             comment_content,
             comment_created_at,
             comment_likes_count,
-            reply_count,
             reply_id,
             reply_user_id,
             reply_content,
@@ -148,13 +147,13 @@ function organizePosts(posts) {
                 post_likes_count,
                 post_comments_count,
                 post_media_url,
-                comments: {},
+                comments: [],
             };
         }
 
         // If the comment doesn't exist in the organizedPosts object, initialize it
-        if (!organizedPosts[post_id].comments[comment_id]) {
-            organizedPosts[post_id].comments[comment_id] = {
+        if (comment_id && !organizedPosts[post_id].comments.some((c) => c.comment_id === comment_id)) {
+            organizedPosts[post_id].comments.push({
                 comment_id,
                 comment_user_id,
                 comment_content,
@@ -162,26 +161,30 @@ function organizePosts(posts) {
                 comment_likes_count,
                 comment_username,
                 comment_user_profile_picture,
-                replies: {},
-            };
+                replies: [],
+            });
         }
 
         // Add the reply data to the comment
         if (reply_id) {
-            organizedPosts[post_id].comments[comment_id].replies[reply_id] = {
-                reply_id,
-                reply_user_id,
-                reply_content,
-                reply_created_at,
-                reply_likes_count,
-                reply_username,
-                reply_user_profile_picture,
-            };
+            const comment = organizedPosts[post_id].comments.find((c) => c.comment_id === comment_id);
+            if (comment && !comment.replies.some((r) => r.reply_id === reply_id)) {
+                comment.replies.push({
+                    reply_id,
+                    reply_user_id,
+                    reply_content,
+                    reply_created_at,
+                    reply_likes_count,
+                    reply_username,
+                    reply_user_profile_picture,
+                });
+            }
         }
     });
 
     return organizedPosts;
 }
+
 
 
 

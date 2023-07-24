@@ -1,23 +1,24 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { BiArrowBack, BiCloudLightRain } from "react-icons/bi";
+import { BiArrowBack } from "react-icons/bi";
 import { css } from "@emotion/react";
 import { BounceLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import the CSS for styling the toasts
-import "../css/login.css";
+import "react-toastify/dist/ReactToastify.css";
+import "../css/settings.css";
 
-const CreateProfile = () => {
+const Settings = () => {
   const navigate = useNavigate();
   const backHome = () => {
     navigate("/");
   };
+
   const [Bio, setBio] = useState("");
   const [Username, setUsername] = useState("");
   const [ProfilePicture, setProfilePicture] = useState("");
   const [Location, setLocation] = useState("");
-  const [SelectedFile, setSelectedFile] = useState(null); // New state variable
+  const [SelectedFile, setSelectedFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const uploadImage = (files) => {
@@ -34,7 +35,6 @@ const CreateProfile = () => {
         setProfilePicture(data.secure_url);
       });
   };
-  console.log("hey momma i made it");
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
@@ -52,8 +52,8 @@ const CreateProfile = () => {
     };
     try {
       setIsLoading(true);
-      const response = await axios.post(
-        "http://localhost:5010/createProfile",
+      const response = await axios.put(
+        "http://localhost:5010/updateProfile",
         profileData,
         {
           withCredentials: true,
@@ -61,15 +61,49 @@ const CreateProfile = () => {
       );
       console.log(response);
       if (response.data.success) {
-        toast.success("Profile created successfully!");
-        // Profile created successfully, navigate to user's profile
-        navigate("/home");
+        toast.success("Profile updated successfully!");
+        // Profile updated successfully, navigate back to user's profile
+        navigate("/home/");
       } else {
-        // Handle profile creation failure
-        toast.error("Profile Creation Failed. Please try again.");
+        // Handle profile update failure
+        toast.error("Profile Update Failed. Please try again.");
       }
     } catch (error) {
-      toast.error("Error while creating profile. Please try again later.");
+      toast.error("Error while updating profile. Please try again later.");
+      if (error.response) {
+        console.error("Server Error:", error.response.data);
+      } else if (error.request) {
+        console.error("No response from server:", error.request);
+      } else {
+        console.error("Error:", error.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    // Your code for handling account deletion
+    try {
+      setIsLoading(true);
+      const response = await axios.put(
+        "http://localhost:5010/deleteProfile",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response);
+      if (response.data.success) {
+        toast.success("Account deleted successfully!");
+        // Account deleted successfully, navigate back to home page
+        navigate("/signin");
+      } else {
+        // Handle account deletion failure
+        toast.error("Account Deletion Failed. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Error while deleting account. Please try again later.");
       if (error.response) {
         console.error("Server Error:", error.response.data);
       } else if (error.request) {
@@ -88,32 +122,25 @@ const CreateProfile = () => {
   `;
 
   return (
-    <div>
-      <div className="backhome" onClick={backHome}>
+    <div className="settings-container">
+      <div className="back-btn" onClick={backHome}>
         <BiArrowBack />
       </div>
-      <form className="sign-up-form" onSubmit={handleSubmit}>
-        <h1>Create Profile</h1>
+      <form className="settings-form" onSubmit={handleSubmit}>
+        <h1>Edit Profile</h1>
+        <label htmlFor="username">Username</label>
         <input
           type="text"
-          placeholder="Username"
-          className="input-box"
+          id="username"
           value={Username}
           onChange={(e) => setUsername(e.target.value)}
         />
+        <label htmlFor="bio">Bio</label>
         <input
           type="text"
-          placeholder="Bio"
-          className="input-box"
+          id="bio"
           value={Bio}
           onChange={(e) => setBio(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Location"
-          className="input-box"
-          value={Location}
-          onChange={(e) => setLocation(e.target.value)}
         />
         <div className="file-input-container">
           <label htmlFor="profilePicture" className="file-input-label">
@@ -131,18 +158,30 @@ const CreateProfile = () => {
             </span>
           )}
         </div>
+        <label htmlFor="location">Location</label>
+        <input
+          type="text"
+          id="location"
+          value={Location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
 
-        <button className="sign-btn" disabled={isLoading}>
+        <button className="update-btn" disabled={isLoading}>
           {isLoading ? (
             <BounceLoader css={override} size={20} color={"#ffffff"} />
           ) : (
-            "Create Profile"
+            "Update Profile"
           )}
         </button>
       </form>
+
+      <button className="delete-account-btn" onClick={handleDeleteAccount}>
+        Delete Account
+      </button>
+
       <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
   );
 };
 
-export default CreateProfile;
+export default Settings;

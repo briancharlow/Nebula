@@ -109,6 +109,26 @@ async function loginUser(req, res) {
         res.send(error.message);
     }
 }
+async function getLoggedInUser(req, res) {
+    try {
+        let user = req.session.user;
+        if (user) {
+            res.json({
+                success: true,
+                message: "user found",
+                user: user,
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: "No user found",
+            });
+        }
+    } catch (error) {
+        res.send(error.message);
+    }
+}
+
 
 async function logoutUser(req, res) {
     console.log(req.session)
@@ -127,5 +147,7 @@ async function logoutUser(req, res) {
 module.exports = {
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    getLoggedInUser
+
 }

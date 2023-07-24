@@ -1,0 +1,79 @@
+/* settings.css */
+
+/* Container for the settings page */
+.settings-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Back button */
+.back-btn {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Form for user details */
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.settings-form label {
+  font-weight: bold;
+}
+
+.settings-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.settings-form button {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.settings-form button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* File input for profile picture */
+.file-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.file-input-label {
+  cursor: pointer;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-selected-label {
+  font-size: 14px;
+  color: #007bff;
+}
+
+/* Delete account button */
+.delete-account-btn {
+  margin-top: 30px;
+  padding: 10px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Add more styles as needed to enhance the UI */

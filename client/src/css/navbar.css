@@ -1,122 +1,79 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+.navbar {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  background-color: #1da1f2;
 }
 
-.navbar {
-  display: inline;
-  background-color: #f0f0f0;
-  height: 60px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-}
 .toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  gap: 20px;
+  padding: 0 16px;
+  height: 64px;
 }
-.logo {
-  width: 70px;
-  height: 50px;
-  margin-left: 0px;
-
-  align-self: flex-start;
-}
-
-.menu-button {
-  padding: 6px;
-  border-radius: 4px;
-}
-
-.menu-icon {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background-color: #000;
-  margin: 4px 0;
-  align-self: flex-start;
-}
-
-.MuiAppBar-colorPrimary {
-  background-color: #f0f0f0;
-  color: #000;
-}
-
-.search .MuiSvgIcon-root {
-  margin-right: 8px;
-}
-
-.right-section {
-  display: flex;
-  align-items: center;
-}
-
-.create-icon {
-  color: #fff;
-}
-
-.profile-icon {
-  color: #000;
-}
-
-/* ... Existing CSS ... */
-
-.menu-button {
-  padding: 6px;
-  border-radius: 4px;
-}
-
 .search {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
-  padding: 4px 8px;
-  border-radius: 4px;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 20px;
+  margin-right: 20px;
 }
-
-.search .MuiSvgIcon-root {
-  margin-right: 8px;
+.search input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 20px;
+  padding: 16px;
+  outline: none;
+  font-size: 16px;
 }
-
-.right-section {
-  display: flex;
-  align-items: center;
-}
-
-.create-icon {
+.nebula h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 16px;
   color: #fff;
+  margin-left: 16px;
+}
+
+.logo {
+  width: 120px;
+  height: 48px;
+}
+
+.icon-button {
+  cursor: pointer;
+  margin-left: 8px;
+  color: #000000;
+}
+
+.icon-button svg {
+  font-size: 24px;
 }
 
 .profile-icon {
-  color: #000;
+  width: 32px;
+  height: 32px;
 }
-
-/* New CSS for LeftBar */
 .leftbar {
   width: 0;
   flex-shrink: 0;
   white-space: nowrap;
   overflow: hidden;
   z-index: 0;
-  transition: width 0.3s;
+  transition: width 0.7s;
 }
 
 .leftbar.open {
   width: 280px;
-  transition: width 0.3s;
+  transition: width 0.7s;
 }
 
-.retract-button {
+.menu-button {
   cursor: pointer;
-}
-
-.retract-icon {
-  display: block;
-  width: 18px;
-  height: 2px;
-  background-color: #000;
-  margin: 4px 0;
 }

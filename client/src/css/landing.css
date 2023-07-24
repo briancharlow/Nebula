@@ -1,4 +1,6 @@
 /* LandingPage.css */
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa&family=VT323&display=swap");
+
 .landing-page {
   display: flex;
   flex-direction: column;
@@ -16,13 +18,19 @@
   width: 100%;
   background-color: #fff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background-image: url("../img/gradient\ blue.jpg");
+  background-image: url("../img/background.jpg");
   background-size: cover;
   background-position: center;
 }
+.navbar-brand {
+  font-size: 30px;
+  font-weight: bold;
+  color: #73282c;
+  font-family: "VT323", monospace;
+}
 .navbar-brand img {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
 }
 
 .nav-links {
@@ -101,13 +109,23 @@
 .loading-spinner {
   margin: 40px;
 }
-li {
+.link {
   list-style: none;
-  color: red;
+  color: #73282c;
+  border: #73282c 1px solid;
+  background-color: #fff;
+  font-weight: bold;
+  font-family: "Comfortaa", cursive;
+  padding: 10px;
 }
-li:hover {
-  color: blue;
-  border-radius: 5px;
+.link:hover {
+  color: #cb0e17;
+
+  border: 1px solid #cb0e17;
+  background-color: #fff;
+  /*make the text pop up a bit*/
+  transform: scale(1.1);
+  transition: all 0.3s ease-in-out;
 }
 .social-icons {
   margin-bottom: 0;
@@ -123,6 +141,7 @@ h1 {
   font-size: 36px;
   margin-bottom: 10px;
   color: rgb(0, 0, 255);
+  font-family: "Comfortaa", cursive;
 }
 
 p {

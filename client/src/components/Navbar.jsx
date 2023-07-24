@@ -1,40 +1,30 @@
-import React, { useState } from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import InputBase from "@material-ui/core/InputBase";
-import SearchIcon from "@material-ui/icons/Search";
-import PersonIcon from "@material-ui/icons/Person";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight"; // Icon for reveal button
-import Logo from "../img/logo2.png";
-import { Avatar } from "@material-ui/core";
+import React from "react";
+import { FaSearch, FaUser, FaChevronRight } from "react-icons/fa";
+import Avatar from "@material-ui/core/Avatar";
+
 import "../css/navbar.css";
 
-
 const Navbar = ({ onToggleLeftBar }) => {
-  
-
   return (
-    <AppBar position="sticky" className="navbar">
-      <Toolbar className="toolbar">
-         <IconButton className="menu-button" onClick={onToggleLeftBar}>
-          <ChevronRightIcon />
-        </IconButton>
-        <div>
-          <img src={Logo} alt="LOGO" className="logo" />
+    <div className="navbar">
+      <div className="toolbar">
+        <div className="menu-button" onClick={onToggleLeftBar}>
+          <FaChevronRight />
+        </div>
+        <div className="nebula">
+          <h2>Nebula</h2>
         </div>
         <div className="search">
-          <IconButton>
-            <SearchIcon />
-          </IconButton>
-          <InputBase placeholder="Search..." />
+          <div className="icon-button">
+            <FaSearch />
+          </div>
+          <input type="text" placeholder="Search..." />
         </div>
-        
-        <IconButton>
-          <Avatar  className="profile-icon" />
-        </IconButton>
-      </Toolbar>
-    </AppBar>
+        <div className="icon-button">
+          <Avatar className="profile-icon" />
+        </div>
+      </div>
+    </div>
   );
 };
 

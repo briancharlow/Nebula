@@ -8,6 +8,7 @@
   display: flex;
   overflow: hidden;
   justify-content: space-between;
+
   /* margin-top: 1rem; */
 }
 
@@ -17,114 +18,10 @@
   white-space: nowrap;
   overflow: hidden;
   z-index: 0;
-  transition: width 0.3s;
+  transition: width 0.7s;
   top: 60px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-.MuiDrawer-paper {
-  top: 60px !important;
-}
-
-.leftbar h3 {
-  font-size: 18px;
-  font-weight: 800;
-  color: #1da1f2;
-}
-
-.retract-button {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.retract-icon {
-  display: block;
-  width: 18px;
-  height: 2px;
-  background-color: #000;
-  margin: 4px 0;
-}
-
-.right-section {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  position: sticky;
-}
-
-.right-section h2 {
-  font-size: 22px;
-  font-weight: 800;
-  margin-bottom: 16px;
-}
-
-.right-section .suggested {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.right-section .suggested img {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-}
-
-.right-section .suggested p {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.right-section .suggested button {
-  font-size: 14px;
-  font-weight: 600;
-  padding: 6px 12px;
-}
-
-.rightbar {
-  width: 280px;
-  min-width: 280px;
-  flex-shrink: 0;
-  background-color: #f7f9fa;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  position: fixed;
-  top: 60px;
-  right: 0;
-}
-
-.rightbar h2 {
-  font-size: 22px;
-  font-weight: 800;
-  margin-bottom: 16px;
-}
-
-.rightbar .suggested {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.rightbar .suggested img {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-}
-
-.rightbar .suggested p {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.rightbar .suggested button {
-  font-size: 14px;
-  font-weight: 600;
-  padding: 6px 12px;
 }

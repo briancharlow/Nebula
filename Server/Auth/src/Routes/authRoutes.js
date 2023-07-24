@@ -3,7 +3,7 @@ const express = require("express");
 const authRouter = express.Router();
 
 
-const { registerUser, loginUser, logoutUser } = require("../Controllers/authController");
+const { registerUser, loginUser, logoutUser, getLoggedInUser } = require("../Controllers/authController");
 
 const { sessionAuthorization } = require("../middlewares/sessionAuthorization");
 
@@ -17,7 +17,7 @@ authRouter.post("/register", newUserMiddleware, registerUser)
 
 authRouter.post("/login", loginUser)
 
-
+authRouter.get("/getLoggedInUser", sessionAuthorization, getLoggedInUser)
 authRouter.get("/logout", sessionAuthorization, logoutUser)
 
 module.exports = authRouter;

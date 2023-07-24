@@ -27,15 +27,23 @@ const LandingPage = () => {
       {/* Navbar */}
       <nav className="nav">
         <div className="navbar-brand">
-        <img src={Nebula} alt="logo" />    
+          Nebula   
         </div>
 
         <ul className="nav-links">
           <li>
-            <Link to="/signin">Login</Link>
+            <Link to="/signin">
+                <span className="link">
+                    Login
+                </span>
+            </Link>
           </li>
           <li>
-            <Link to="/signup">Sign Up</Link>
+            <Link to="/signup">
+                <span className="link">
+                    Sign Up
+                </span>
+            </Link>
           </li>
         </ul>
       </nav>

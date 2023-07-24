@@ -10,46 +10,107 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"; // Icon for retract button
+import { useNavigate, useLocation } from "react-router-dom";
 import "../css/leftbar.css";
 import "../css/navbar.css";
+import Logo from "../img/logo2.png";
 
 const LeftBar = ({ isOpen, onClose }) => {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+  const location = useLocation(); // Initialize the useLocation hook
+
+  const handleIconClick = (componentName) => {
+    // Implement the logic to navigate to the respective component
+    switch (componentName) {
+      case "Home":
+        navigate("/home");
+        break;
+      case "Notifications":
+        navigate("/home/notifications");
+        break;
+      case "Settings":
+        navigate("/home/settings");
+        break;
+      case "Theme Switcher":
+        navigate("/home/theme");
+        break;
+      case "Logout":
+        navigate("/home/logout");
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
-    <Drawer variant="persistent" anchor="left" open={isOpen} className={isOpen ? "leftbar open" : "leftbar"} style={{top: "60px"}}>
+    <Drawer
+      variant="persistent"
+      anchor="left"
+      open={isOpen}
+      className={isOpen ? "leftbar open" : "leftbar"}
+      style={{ top: "60px" }}
+    >
       <div className="toolbar">
         <ChevronLeftIcon onClick={onClose} className="retract-button" />
       </div>
+      <img className="brand" src={Logo} alt="logo" />
+
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <NotificationsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Notifications" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <SettingsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Settings" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <Brightness4Icon />
-          </ListItemIcon>
-          <ListItemText primary="Theme Switcher" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" />
-        </ListItem>
+        <div
+          onClick={() => handleIconClick("Home")}
+          className={location.pathname === "/home" ? "active" : ""}
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+        </div>
+        <div
+          onClick={() => handleIconClick("Notifications")}
+          className={location.pathname === "/notifications" ? "active" : ""}
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <NotificationsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Notifications" />
+          </ListItem>
+        </div>
+        <div
+          onClick={() => handleIconClick("Settings")}
+          className={location.pathname === "/settings" ? "active" : ""}
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Settings" />
+          </ListItem>
+        </div>
+        <div
+          onClick={() => handleIconClick("Theme Switcher")}
+          className={location.pathname === "/theme" ? "active" : ""}
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <Brightness4Icon />
+            </ListItemIcon>
+            <ListItemText primary="Theme Switcher" />
+          </ListItem>
+        </div>
+        <div
+          onClick={() => handleIconClick("Logout")}
+          className={location.pathname === "/logout" ? "active" : ""}
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem>
+        </div>
       </List>
     </Drawer>
   );

@@ -176,7 +176,7 @@ async function followUser(req, res) {
             const result = await request.execute("FollowUser");
             console.log(result);
 
-            if (result.recordset[0].Response === "User followed successfully") {
+            if (result.recordset[0].Response === "You are now following the user.") {
                 res.status(200).send({
                     success: true,
                     message: "Successfully followed user",
@@ -227,15 +227,40 @@ async function unfollowUser(req, res) {
         res.status(500).send(error.message);
     }
 }
+async function getSuggestions(req, res) {
+    const { pool } = req;
+    const userId = req.session.user.id;
+
+    try {
+        if (pool.connected) {
+            const suggestionsResults = await pool.request().input("userId", userId).execute("GetUsersNotFollowingWithInfo");
+            const suggestions = suggestionsResults.recordset;
+
+            if (suggestions) {
+                res.status(200).send({
+                    success: true,
+                    message: "Successfully retrieved suggestions",
+                    suggestions: suggestions,
+                });
+
+                return suggestions;
+            }
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
 
 async function getNotifications(req, res) {
     const { pool } = req;
     const userId = req.session.user.id;
 
     try {
+        console.log("Not connected here");
         if (pool.connected) {
+            console.log("Connected here")
             const notificationsResults = await pool.request().input("userId", userId).execute("GetUserNotifications");
-            console.log(notificationsResults);
+
             const notifications = notificationsResults.recordset;
 
             if (notifications) {
@@ -245,11 +270,13 @@ async function getNotifications(req, res) {
                     notifications: notifications,
                 });
 
-                return notifications;
+
             }
         }
     } catch (error) {
+        console.log(error)
         res.status(500).send(error.message);
+
     }
 }
 
@@ -264,7 +291,7 @@ async function getSingleNotification(req, res) {
             request.input("notificationId", notificationId);
 
             const result = await request.execute("GetNotification");
-            console.log(result);
+
             const notification = result.recordset[0];
 
             if (notification) {
@@ -279,6 +306,27 @@ async function getSingleNotification(req, res) {
                     message: "Notification not found",
                 });
             }
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+async function markAllNotificationsAsRead(req, res) {
+    const { pool } = req;
+    const userId = req.session.user.id;
+
+    try {
+        if (pool.connected) {
+            const request = pool.request();
+            request.input("userId", userId);
+
+            await request.execute("MarkAllNotificationsAsRead");
+
+            res.status(200).send({
+                success: true,
+                message: "All notifications marked as read",
+            });
         }
     } catch (error) {
         res.status(500).send(error.message);
@@ -307,26 +355,6 @@ async function markNotificationAsRead(req, res) {
 }
 
 
-async function markAllNotificationsAsRead(req, res) {
-    const { pool } = req;
-    const userId = req.session.user.id;
-
-    try {
-        if (pool.connected) {
-            const request = pool.request();
-            request.input("userId", userId);
-
-            await request.execute("MarkAllNotificationsAsRead");
-
-            res.status(200).send({
-                success: true,
-                message: "All notifications marked as read",
-            });
-        }
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-}
 
 
-module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead, markAllNotificationsAsRead, getOwnProfile }
+module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead, markAllNotificationsAsRead, getOwnProfile, getSuggestions }

@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Navbar from "./Navbar";
 import LeftBar from "./LeftBar";
 import RightBar from "./RightBar";
-import CenterOutlet from "./CenterOutlet";
+import { Outlet } from "react-router-dom";
 import "../css/home.css";
+//import outlet from react
 
 const Home = () => {
   const [isLeftBarOpen, setIsLeftBarOpen] = useState(true);
@@ -17,7 +18,7 @@ const Home = () => {
       <Navbar onToggleLeftBar={toggleLeftBar} />
       <div className="content-container">
         <LeftBar isOpen={isLeftBarOpen} onClose={toggleLeftBar} />
-        <CenterOutlet />
+        <Outlet />
         <RightBar />
       </div>
     </div>

@@ -4,6 +4,7 @@
   white-space: nowrap;
   overflow: hidden;
   z-index: 0;
+  margin-top: 17px;
 }
 
 .retract-button {
@@ -20,4 +21,11 @@
 
 .leftbar .MuiListItemIcon-root {
   min-width: 40px;
+}
+.brand {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  align-self: center;
+  margin-bottom: 0;
 }
