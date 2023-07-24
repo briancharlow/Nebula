@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { FaUserCircle } from "react-icons/fa";
 import "../css/notifications.css";
 
 const Notifications = () => {
@@ -19,9 +20,12 @@ const Notifications = () => {
         }
       );
       console.log(response);
-
       if (response.data.success) {
-        setNotifications(response.data.notifications);
+        // Filter out the unread notifications
+        const unreadNotifications = response.data.notifications.filter(
+          (notification) => !notification.is_read
+        );
+        setNotifications(unreadNotifications);
       } else {
         console.log("Failed to fetch notifications:", response.data.message);
       }
@@ -30,33 +34,14 @@ const Notifications = () => {
     }
   };
 
-  const markAllNotificationsAsRead = async () => {
-    try {
-      const response = await axios.put(
-        "http://localhost:5010/markAllRead",
-        {},
-        { withCredentials: true }
-      );
-
-      if (response.data.success) {
-        setNotifications([]);
-      } else {
-        console.log(
-          "Failed to mark all notifications as read:",
-          response.data.message
-        );
-      }
-    } catch (error) {
-      console.log("Error while marking all notifications as read:", error);
-    }
-  };
-
   const markNotificationAsRead = async (notificationId) => {
     try {
       const response = await axios.put(
         `http://localhost:5010/markRead/${notificationId}`,
         {},
-        { withCredentials: true }
+        {
+          withCredentials: true,
+        }
       );
 
       if (response.data.success) {
@@ -77,18 +62,29 @@ const Notifications = () => {
   };
 
   return (
-    <div>
-      <h2>Notifications</h2>
-      <button onClick={markAllNotificationsAsRead}>Mark All as Read</button>
+    <div className="notifications-container">
+      <div className="notifications-header">
+        <h2 className="notifications-heading">Notifications</h2>
+      </div>
       {notifications.map((notification) => (
         <div
           key={notification.id}
-          style={{ display: "flex", alignItems: "center" }}
+          className={`notification ${notification.is_read ? "read" : "unread"}`}
         >
-          <p>{notification.message}</p>
+          {notification.sender_profile_picture ? (
+            <img
+              src={notification.sender_profile_picture}
+              alt="Profile"
+              className="profile-picture"
+            />
+          ) : (
+            <FaUserCircle className="default-profile-picture" />
+          )}
+          <h3>{notification.sender_username}</h3>
+          <p className="notification-message">{notification.message}</p>
           {!notification.is_read && (
             <AiOutlineCheckCircle
-              style={{ marginLeft: "10px", cursor: "pointer" }}
+              className="notification-icon"
               onClick={() => markNotificationAsRead(notification.id)}
             />
           )}
