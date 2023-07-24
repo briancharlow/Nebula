@@ -1,6 +1,7 @@
 /* css/comment-form.css */
 
 .comment-form {
+  box-sizing: border-box;
   width: 100%;
   display: flex;
   align-items: center;
