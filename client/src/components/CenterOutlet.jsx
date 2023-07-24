@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BsChatLeftText } from "react-icons/bs";
-import {
-  AiOutlineLike,
-  AiFillLike,
-  AiOutlineDislike,
-  AiFillDislike,
-} from "react-icons/ai";
+import { AiOutlineLike, AiFillDislike } from "react-icons/ai";
 import { Avatar } from "@material-ui/core"; // Import Avatar from Material-UI
 import axios from "axios";
 import PostForm from "./PostForm";
