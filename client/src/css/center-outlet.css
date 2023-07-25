@@ -34,7 +34,9 @@
 .post-content {
   margin-top: 12px;
 }
-
+.info:hover {
+  cursor: pointer;
+}
 .info p::first-letter {
   text-transform: capitalize;
 }

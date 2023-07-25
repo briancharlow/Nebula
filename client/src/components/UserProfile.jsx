@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HashLoader } from "react-spinners";
 import { FaUser, FaUsers, FaStickyNote, FaMapMarkerAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { Avatar } from "@material-ui/core";
 import { AiOutlineEdit } from "react-icons/ai"; // Import the pen/quill icon
 import "../css/profile.css";
@@ -12,9 +13,19 @@ const UserProfile = () => {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     fetchUserProfileFromAPI();
   }, []);
+
+  const handleProfileClick = () => {
+    if (profile) {
+      navigate(`/home/profilePage/${profile.user_id}`);
+    } else {
+      toast.error("Failed to fetch user profile. Please try again.");
+    }
+  };
 
   const fetchUserProfileFromAPI = async () => {
     try {
@@ -51,7 +62,7 @@ const UserProfile = () => {
       {profile ? (
         <>
           <div className="profile-info">
-            <div className="pro-data">
+            <div className="pro-data" onClick={handleProfileClick}>
               {profile.profile_picture ? (
                 <Avatar src={profile.profile_picture} alt="Profile" />
               ) : (

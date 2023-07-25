@@ -11,7 +11,7 @@ import "../css/settings.css";
 const Settings = () => {
   const navigate = useNavigate();
   const backHome = () => {
-    navigate("/");
+    navigate("/home/");
   };
 
   const [Bio, setBio] = useState("");
@@ -19,6 +19,8 @@ const Settings = () => {
   const [ProfilePicture, setProfilePicture] = useState("");
   const [Location, setLocation] = useState("");
   const [SelectedFile, setSelectedFile] = useState(null);
+  const [OldPassword, setOldPassword] = useState("");
+  const [NewPassword, setNewPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const uploadImage = (files) => {
@@ -49,6 +51,8 @@ const Settings = () => {
       username: Username,
       profilePicture: ProfilePicture.toString(),
       location: Location,
+      oldPassword: OldPassword,
+      newPassword: NewPassword,
     };
     try {
       setIsLoading(true);
@@ -164,6 +168,21 @@ const Settings = () => {
           id="location"
           value={Location}
           onChange={(e) => setLocation(e.target.value)}
+        />
+        {/* New password fields */}
+        <label htmlFor="oldPassword">Old Password</label>
+        <input
+          type="password"
+          id="oldPassword"
+          value={OldPassword}
+          onChange={(e) => setOldPassword(e.target.value)}
+        />
+        <label htmlFor="newPassword">New Password</label>
+        <input
+          type="password"
+          id="newPassword"
+          value={NewPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
         />
 
         <button className="update-btn" disabled={isLoading}>

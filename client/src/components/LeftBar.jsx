@@ -31,9 +31,9 @@ const LeftBar = ({ isOpen, onClose }) => {
       case "Settings":
         navigate("/home/settings");
         break;
-      case "Theme Switcher":
-        navigate("/home/theme");
-        break;
+      // case "Theme Switcher":
+      //   navigate("/home/theme");
+      //   break;
       case "Logout":
         navigate("/home/logout");
         break;

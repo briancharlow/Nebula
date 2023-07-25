@@ -33,6 +33,7 @@ const CreateProfile = () => {
       .then((data) => {
         setProfilePicture(data.secure_url);
       });
+    console.log("inside cloudinary");
   };
   console.log("hey momma i made it");
 

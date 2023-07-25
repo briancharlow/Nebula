@@ -10,6 +10,7 @@ import CenterOutlet from "./components/CenterOutlet";
 import Notifications from "./components/Notifications";
 import Settings from "./components/Settings";
 import LogoutPopup from "./components/LogOutPopup";
+import ProfilePage from "./components/ProfilePage";
 
 const App = () => {
   return (
@@ -24,6 +25,8 @@ const App = () => {
           <Route path="/home/notifications" element={<Notifications />} />
           <Route path="/home/settings" element={<Settings />} />
           <Route path="/home/logout" element={<LogoutPopup />} />
+          <Route path="/home/profilePage" element={<ProfilePage />} />
+
 
         </Route>
         <Route path="/createprofile" element={<CreateProfile />} />

@@ -2,6 +2,8 @@
 require('dotenv').config();
 
 const { sql, ConnectionPool } = require('mssql');
+const bcrypt = require('bcrypt');
+
 
 
 async function createProfile(req, res) {
@@ -43,22 +45,40 @@ async function createProfile(req, res) {
 
 
 async function updateProfile(req, res) {
-    const { pool } = req
+    const { pool } = req;
     const userID = req.session.user.id;
-    const { bio, username, profilePicture,
-        location } = req.body
+    const { bio, username, profilePicture, location, oldPassword, newPassword } = req.body;
 
     try {
         if (pool.connected) {
-            let results = await pool.request()
+            // Validate the old password using bcrypt
+            const userRecord = await pool.request()
+                .input("userId", userID)
+                .input("oldPassword", oldPassword)
+                .query("SELECT password FROM Users WHERE id = @userId");
+
+            const hashedPasswordFromDB = userRecord.recordset[0].password;
+            const isPasswordValid = await bcrypt.compare(oldPassword, hashedPasswordFromDB);
+
+            if (!isPasswordValid) {
+                return res.status(401).send({
+                    success: false,
+                    message: "Incorrect old password",
+                });
+            }
+
+            // Proceed with updating the profile and password
+            const results = await pool.request()
                 .input("userId", userID)
                 .input("bio", bio)
                 .input("username", username)
                 .input("profilePicture", profilePicture)
                 .input("location", location)
-                .execute("UpdateProfile")
-            let profile = results.recordset[0]
-            console.log(profile)
+                .input("password", newPassword) // Add the new password as an input parameter
+                .execute("UpdateProfile");
+
+            const profile = results.recordset[0];
+            console.log(profile);
 
             if (profile) {
                 res.status(201).send({
@@ -67,16 +87,14 @@ async function updateProfile(req, res) {
                     results: profile
                 });
 
-                return profile
+                return profile;
             }
         }
     } catch (error) {
-        res.send(error.message)
-
+        res.status(500).send(error.message);
     }
-
-
 }
+
 
 async function deleteProfile(req, res) {
     const { pool } = req
@@ -354,7 +372,36 @@ async function markNotificationAsRead(req, res) {
     }
 }
 
+async function searchUsers(req, res) {
+    const { pool } = req;
+    const userId = req.session.user.id;
+    const searchTerm = req.params.searchTerm;
+
+    try {
+        if (pool.connected) {
+            const results = await pool
+                .request()
+                .input("userId", userId)
+                .input("searchTerm", searchTerm)
+                .execute("SearchUsers");
+
+            const users = results.recordset;
+
+            res.status(200).send({
+                success: true,
+                message: "User search results",
+                results: users,
+            });
+        }
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: "Error while searching for users",
+            error: error.message,
+        });
+    }
+}
 
 
 
-module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead, markAllNotificationsAsRead, getOwnProfile, getSuggestions }
+module.exports = { createProfile, updateProfile, deleteProfile, getUserProfile, followUser, unfollowUser, getNotifications, getSingleNotification, markNotificationAsRead, markAllNotificationsAsRead, getOwnProfile, getSuggestions, searchUsers }

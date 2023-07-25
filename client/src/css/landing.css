@@ -8,6 +8,8 @@
   justify-content: space-between;
   height: 100vh;
   background-color: #f9f9f9;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .nav {
@@ -23,10 +25,11 @@
   background-position: center;
 }
 .navbar-brand {
-  font-size: 30px;
+  margin-left: 2em;
+  font-size: 40px;
   font-weight: bold;
   color: #73282c;
-  font-family: "VT323", monospace;
+  font-family: "Comfortaa", cursive;
 }
 .navbar-brand img {
   width: 60px;
@@ -62,19 +65,24 @@
 .gallery {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
   width: 100%;
   border: 1px solid #ccc;
   margin-top: 20px;
-  padding: 1em;
+  padding: 2em;
   background-image: url("../img/background.jpg");
   background-size: cover;
   background-position: center;
 }
 .gallery-card {
+  margin-top: 2em;
+  margin-bottom: 2em;
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
-  width: 300px;
+  border-radius: 1em;
+  width: 30%;
   height: 100%;
   padding: 1em;
   background-color: #fff;

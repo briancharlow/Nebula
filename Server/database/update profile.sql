@@ -1,13 +1,15 @@
-ALTER PROCEDURE UpdateProfile
+CREATE OR ALTER PROCEDURE UpdateProfile
   @userId INT,
   @bio NVARCHAR(MAX),
   @username VARCHAR(255),
   @profilePicture VARCHAR(255),
-  @location VARCHAR(255)
+  @location VARCHAR(255),
+  @password VARCHAR(255) -- New parameter for the user's password
 AS
 BEGIN
   SET NOCOUNT ON;
 
+  -- Update the user's profile in the Profiles table
   UPDATE Profiles
   SET bio = @bio,
       username = @username,
@@ -15,23 +17,16 @@ BEGIN
       location = @location
   WHERE user_id = @userId;
 
-  SELECT * FROM Profiles WHERE user_id = @userId;
+  -- Update the user's password in the Users table
+  UPDATE Users
+  SET password = @password
+  WHERE id = @userId;
+
+  -- Return the updated profile information along with the password
+  SELECT P.*, U.password
+  FROM Profiles P
+  INNER JOIN Users U ON P.user_id = U.id
+  WHERE P.user_id = @userId;
 END;
 
-select * from Profiles
-DECLARE @userId INT = 2; -- Provide the user ID to update
-DECLARE @bio NVARCHAR(MAX) = 'New bio content';
-DECLARE @username VARCHAR(255) = 'new_username';
-DECLARE @profilePicture VARCHAR(255) = 'new_profile_picture.jpg';
-DECLARE @location VARCHAR(255) = 'New York';
 
-EXEC UpdateProfile
-  @userId = @userId,
-  @bio = @bio,
-  @username = @username,
-  @profilePicture = @profilePicture,
-  @location = @location;
-
-
-
-select * from Notifications

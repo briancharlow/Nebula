@@ -1,0 +1,111 @@
+/* user-profile.css */
+
+.user-profile-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.user-profile {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.default-profile-picture {
+  font-size: 80px;
+  margin-right: 20px;
+}
+
+.user-details h2 {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.user-details p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.user-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.user-stats p {
+  font-size: 16px;
+  color: #666;
+}
+
+.user-posts h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.post {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.post img {
+  max-width: 100%;
+  margin-bottom: 10px;
+}
+
+.post-interactions {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  color: #666;
+}
+
+.like-icon,
+.comment-icon {
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+/* Toastify CSS */
+.Toastify__toast-container {
+  z-index: 9999;
+}
+
+.Toastify__toast {
+  font-size: 16px;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.Toastify__toast--success {
+  background-color: #007bff;
+}
+
+.Toastify__toast--error {
+  background-color: #dc3545;
+}

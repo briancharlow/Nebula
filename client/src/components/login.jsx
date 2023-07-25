@@ -5,6 +5,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../css/login.css";
+import { HashLoader } from "react-spinners"; // Import the HashLoader component
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -16,11 +17,14 @@ const SignIn = () => {
   };
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // State to handle loading
 
   // No need to call toast.configure(), just import toast from react-toastify
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Set isLoading to true when the sign-in process starts
+
     const loginData = {
       email: Email,
       password: Password,
@@ -53,6 +57,8 @@ const SignIn = () => {
         console.error("Error:", error.message);
       }
       toast.error("An error occurred. Please try again later.");
+    } finally {
+      setIsLoading(false); // Set isLoading to false when the sign-in process ends
     }
   };
 
@@ -78,7 +84,15 @@ const SignIn = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="sign-btn">Sign In</button>
+        {/* Render the loading spinner while isLoading is true */}
+        {isLoading ? (
+          <div className="loading-container">
+            <HashLoader color="#00BFFF" loading={isLoading} size={80} />
+          </div>
+        ) : (
+          <button className="sign-btn">Sign In</button>
+        )}
+
         <p>
           Don't have an account?{" "}
           <a href=" " onClick={handleSignUpClick}>
