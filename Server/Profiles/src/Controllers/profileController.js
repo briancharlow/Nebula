@@ -113,10 +113,19 @@ async function deleteProfile(req, res) {
                     success: true,
                     message: "Successfully deleted profile",
                 });
-
-                return profile
             }
+
+            else {
+                res.status(201).send({
+                    success: false,
+                    message: "Profile not deleted",
+                });
+            }
+
+            return profile
+
         }
+
     } catch (error) {
         res.send(results.recordset[0].Result)
     }

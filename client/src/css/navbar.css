@@ -23,7 +23,6 @@
   background-color: #fff;
   border-radius: 20px;
   margin-right: 20px;
-  padding: 10px;
 }
 .search input {
   width: 100%;
@@ -92,8 +91,8 @@
   margin-right: 10px;
 }
 
-input[type="text"] {
-  padding: 8px 30px 8px 40px;
+.nav-bar {
+  padding: 6px 20px 6px 30px;
   border: none;
   border-radius: 20px;
   font-size: 14px;
@@ -102,7 +101,7 @@ input[type="text"] {
   transition: width 0.3s ease-in-out;
 }
 
-input[type="text"]:focus {
+.nav-bar:focus {
   width: 300px;
 }
 

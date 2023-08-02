@@ -14,6 +14,7 @@ import CommentSection from "./CommentSection";
 import moment from "moment";
 import SinglePost from "./SinglePost"; // Import the SinglePost component
 import PostForm from "./PostForm"; // Import the PostForm component
+import CommentForm from "./CommentForm"; // Import the CommentForm component
 
 const CenterOutlet = () => {
   const [posts, setPosts] = useState([]);
@@ -298,14 +299,24 @@ const CenterOutlet = () => {
             </div>
             {/* Use SinglePost component to display comments */}
             {post.show_comments && (
-              <CommentSection
-                postId={post.post_id}
-                comments={post.comments}
-                handleLikeComment={handleLikeComment}
-                handleUnlikeComment={handleUnlikeComment}
-                handleCommentInputChange={handleCommentInputChange}
-                handleCommentPost={handleCommentPost}
-              />
+              <>
+                <CommentSection
+                  postId={post.post_id}
+                  comments={post.comments}
+                  handleLikeComment={handleLikeComment}
+                  handleUnlikeComment={handleUnlikeComment}
+                  handleCommentInputChange={handleCommentInputChange}
+                  handleCommentPost={handleCommentPost}
+                />
+                {post.is_commenting && (
+                  <CommentForm
+                    postId={post.post_id}
+                    commentInput={post.commentInput}
+                    handleCommentInputChange={handleCommentInputChange}
+                    handleCommentPost={handleCommentPost}
+                  />
+                )}
+              </>
             )}
           </div>
         ))

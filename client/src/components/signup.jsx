@@ -16,10 +16,9 @@ const SignUp = () => {
   };
   const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
-   const [ContactNumber, setContactNumber] = useState("");
+  const [ContactNumber, setContactNumber] = useState("");
   const [Password, setPassword] = useState("");
   const [c_password, setc_password] = useState("");
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,10 +40,8 @@ const SignUp = () => {
       );
       console.log(response);
       if (response.status === 201) {
-       toast.success("Sign Up Successful! Log in and explore the stars!");
+        toast.success("Sign Up Successful! Log in and explore the stars!");
         navigate("/signin");
-
-
       } else {
         toast.error("Enter Valid Details");
       }
@@ -70,35 +67,35 @@ const SignUp = () => {
         <input
           type="text"
           placeholder="Name"
-          className="input-box"
+          className="input"
           value={Name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
           type="email"
           placeholder="Email"
-          className="input-box"
+          className="input"
           value={Email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="text"
           placeholder="Phone Number"
-          className="input-box"
+          className="input"
           value={ContactNumber}
           onChange={(e) => setContactNumber(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          className="input-box"
+          className="input"
           value={Password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <input
           type="password"
           placeholder="Confirm Password"
-          className="input-box"
+          className="input"
           value={c_password}
           onChange={(e) => setc_password(e.target.value)}
         />

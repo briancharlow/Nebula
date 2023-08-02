@@ -60,7 +60,12 @@ const Navbar = ({ onToggleLeftBar }) => {
           <div className="icon-button">
             <FaSearch />
           </div>
-          <input type="text" placeholder="Search..." onChange={handleSearch} />
+          <input
+            type="text"
+            placeholder="Search..."
+            className="nav-bar"
+            onChange={handleSearch}
+          />
         </div>
         <div className="icon-button">
           <Avatar className="profile-icon" />

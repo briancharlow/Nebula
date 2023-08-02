@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -14,10 +14,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "../css/leftbar.css";
 import "../css/navbar.css";
 import Logo from "../img/logo2.png";
+import ThemeSwitcherPopup from "./ThemeSwitcher";
 
 const LeftBar = ({ isOpen, onClose }) => {
   const navigate = useNavigate(); // Initialize the useNavigate hook
   const location = useLocation(); // Initialize the useLocation hook
+  const [showThemeSwitcher, setShowThemeSwitcher] = useState(false); // State variable for theme switcher
 
   const handleIconClick = (componentName) => {
     // Implement the logic to navigate to the respective component
@@ -31,15 +33,31 @@ const LeftBar = ({ isOpen, onClose }) => {
       case "Settings":
         navigate("/home/settings");
         break;
-      // case "Theme Switcher":
-      //   navigate("/home/theme");
-      //   break;
+      case "Theme Switcher":
+        // Show the theme switcher popup
+        setShowThemeSwitcher(true);
+        break;
       case "Logout":
         navigate("/home/logout");
         break;
       default:
         break;
     }
+  };
+
+  const handleThemeSwitcherClose = () => {
+    // Close the theme switcher popup
+    setShowThemeSwitcher(false);
+  };
+
+  const handleColorChange = (color) => {
+    // Handle the color change logic by updating the root variables
+    document.documentElement.style.setProperty("--maincolor", color);
+    document.documentElement.style.setProperty("--secondarycolor", color);
+    // You can add more properties like --secondarycolor, --textcolor, etc.
+
+    // Close the theme switcher popup after color change
+    handleThemeSwitcherClose();
   };
 
   return (
@@ -112,6 +130,14 @@ const LeftBar = ({ isOpen, onClose }) => {
           </ListItem>
         </div>
       </List>
+
+      {/* Show the ThemeSwitcherPopup component if showThemeSwitcher is true */}
+      {showThemeSwitcher && (
+        <ThemeSwitcherPopup
+          onClose={handleThemeSwitcherClose}
+          onColorChange={handleColorChange}
+        />
+      )}
     </Drawer>
   );
 };
